@@ -1,0 +1,1602 @@
+/* ============================================================
+   Focus Timer & Productivity Dashboard Styles
+   Pomodoro-style focus timer with session tracking and analytics
+   ============================================================ */
+
+/* ============================================================
+   Timer Container
+   ============================================================ */
+
+.ft-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--vl-space-6);
+  padding: var(--vl-space-8);
+  min-height: 400px;
+}
+
+.ft-container-glow {
+  position: relative;
+}
+
+/* ============================================================
+   SVG Circular Progress Ring (240px)
+   ============================================================ */
+
+.ft-timer-ring {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ft-timer-ring svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.ft-ring-track {
+  fill: none;
+  stroke: var(--vl-bg-secondary);
+  stroke-width: 8;
+}
+
+.ft-ring-progress {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ft-ring-progress-work { stroke: #10b981; }
+.ft-ring-progress-short-break { stroke: #06b6d4; }
+.ft-ring-progress-long-break { stroke: #3b82f6; }
+.ft-ring-progress-deep-work { stroke: #8b5cf6; }
+.ft-ring-progress-countdown { stroke: #f59e0b; }
+.ft-ring-progress-stopwatch { stroke: #ec4899; }
+
+.ft-timer-center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* ============================================================
+   Timer Display (Large time text)
+   ============================================================ */
+
+.ft-timer-display {
+  font-size: 48px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--vl-text-heading);
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+
+.ft-timer-display-small {
+  font-size: 36px;
+}
+
+.ft-timer-progress-pct {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: var(--vl-space-1);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Mode Label
+   ============================================================ */
+
+.ft-mode-label {
+  font-size: var(--vl-text-sm);
+  font-weight: 600;
+  color: var(--vl-text-muted);
+  margin-top: var(--vl-space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ft-mode-label-work { color: #10b981; }
+.ft-mode-label-short-break { color: #06b6d4; }
+.ft-mode-label-long-break { color: #3b82f6; }
+.ft-mode-label-deep-work { color: #8b5cf6; }
+.ft-mode-label-countdown { color: #f59e0b; }
+.ft-mode-label-stopwatch { color: #ec4899; }
+
+/* ============================================================
+   Mode Selector (Tab-style)
+   ============================================================ */
+
+.ft-mode-selector {
+  display: flex;
+  gap: 2px;
+  background: var(--vl-bg-secondary);
+  border-radius: var(--vl-radius-lg);
+  padding: 3px;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.ft-mode-tab {
+  padding: var(--vl-space-2) var(--vl-space-4);
+  border-radius: var(--vl-radius-md);
+  font-size: var(--vl-text-xs);
+  font-weight: 500;
+  color: var(--vl-text-muted);
+  cursor: pointer;
+  transition: all var(--vl-transition-fast);
+  white-space: nowrap;
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+.ft-mode-tab:hover {
+  color: var(--vl-text-heading);
+  background: var(--vl-bg-card);
+}
+
+.ft-mode-tab-active {
+  background: var(--vl-bg-card);
+  color: var(--vl-text-heading);
+  box-shadow: var(--vl-shadow-sm);
+  font-weight: 600;
+}
+
+/* ============================================================
+   Session Controls
+   ============================================================ */
+
+.ft-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-3);
+}
+
+.ft-control-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--vl-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--vl-border-subtle);
+  background: var(--vl-bg-card);
+  color: var(--vl-text-secondary);
+  cursor: pointer;
+  transition: all var(--vl-transition-fast);
+  outline: none;
+}
+
+.ft-control-btn:hover {
+  border-color: var(--vl-border-accent);
+  color: var(--vl-text-heading);
+  box-shadow: var(--vl-shadow-glow);
+}
+
+.ft-control-btn:active {
+  transform: scale(0.95);
+}
+
+.ft-control-btn-primary {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #10b981;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.ft-control-btn-primary:hover {
+  background: #059669;
+  color: white;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+  transform: scale(1.05);
+}
+
+.ft-control-btn-primary:active {
+  transform: scale(0.97);
+}
+
+.ft-control-btn-primary.paused {
+  background: #f59e0b;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+}
+
+.ft-control-btn-primary.paused:hover {
+  background: #d97706;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+}
+
+.ft-control-btn-primary.running {
+  background: #ef4444;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+}
+
+.ft-control-btn-primary.running:hover {
+  background: #dc2626;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+}
+
+.ft-control-label {
+  font-size: 10px;
+  color: var(--vl-text-muted);
+  margin-top: 2px;
+  text-align: center;
+}
+
+/* ============================================================
+   Glow Border (Pulsing emerald border during focus)
+   ============================================================ */
+
+.ft-glow-border {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  border: 3px solid transparent;
+  border-radius: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.ft-glow-border-active {
+  opacity: 1;
+  animation: ft-glow-pulse 3s ease-in-out infinite;
+  border-color: #10b981;
+  box-shadow:
+    inset 0 0 30px rgba(16, 185, 129, 0.1),
+    0 0 30px rgba(16, 185, 129, 0.15);
+}
+
+.ft-glow-border-active.ft-glow-border-short-break {
+  border-color: #06b6d4;
+  box-shadow:
+    inset 0 0 30px rgba(6, 182, 212, 0.1),
+    0 0 30px rgba(6, 182, 212, 0.15);
+}
+
+.ft-glow-border-active.ft-glow-border-long-break {
+  border-color: #3b82f6;
+  box-shadow:
+    inset 0 0 30px rgba(59, 130, 246, 0.1),
+    0 0 30px rgba(59, 130, 246, 0.15);
+}
+
+.ft-glow-border-active.ft-glow-border-deep-work {
+  border-color: #8b5cf6;
+  box-shadow:
+    inset 0 0 30px rgba(139, 92, 246, 0.1),
+    0 0 30px rgba(139, 92, 246, 0.15);
+}
+
+@keyframes ft-glow-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* ============================================================
+   Notification Toast
+   ============================================================ */
+
+.ft-notification-toast {
+  position: fixed;
+  top: var(--vl-space-6);
+  right: var(--vl-space-6);
+  z-index: 200;
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: var(--vl-radius-lg);
+  padding: var(--vl-space-4) var(--vl-space-5);
+  box-shadow: var(--vl-shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-3);
+  max-width: 340px;
+  pointer-events: auto;
+  animation: ft-toast-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ft-notification-toast-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--vl-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ft-notification-toast-icon-work { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.ft-notification-toast-icon-break { background: rgba(6, 182, 212, 0.15); color: #06b6d4; }
+.ft-notification-toast-icon-warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
+.ft-notification-toast-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.ft-notification-toast-title {
+  font-size: var(--vl-text-sm);
+  font-weight: 600;
+  color: var(--vl-text-heading);
+}
+
+.ft-notification-toast-message {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: 2px;
+}
+
+.ft-notification-toast-exit {
+  animation: ft-toast-slide-out 0.3s ease forwards;
+}
+
+@keyframes ft-toast-slide-in {
+  from { opacity: 0; transform: translateX(100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes ft-toast-slide-out {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(100px); }
+}
+
+/* ============================================================
+   Sound Toggle & Volume
+   ============================================================ */
+
+.ft-sound-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-3);
+  padding: var(--vl-space-2) var(--vl-space-3);
+  background: var(--vl-bg-secondary);
+  border-radius: var(--vl-radius-md);
+}
+
+.ft-sound-toggle-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--vl-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--vl-text-muted);
+  cursor: pointer;
+  transition: all var(--vl-transition-fast);
+  outline: none;
+}
+
+.ft-sound-toggle-btn:hover {
+  color: var(--vl-text-heading);
+  background: var(--vl-bg-card);
+}
+
+.ft-sound-toggle-btn-active {
+  color: #10b981;
+}
+
+.ft-volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--vl-border-subtle);
+  outline: none;
+  cursor: pointer;
+}
+
+.ft-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #10b981;
+  cursor: pointer;
+  border: 2px solid var(--vl-bg-card);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ft-volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #10b981;
+  cursor: pointer;
+  border: 2px solid var(--vl-bg-card);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================================
+   Session Log
+   ============================================================ */
+
+.ft-session-log {
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.ft-session-log-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--vl-space-3);
+  padding: var(--vl-space-3) var(--vl-space-4);
+  border-bottom: 1px solid var(--vl-border-subtle);
+  transition: background var(--vl-transition-fast);
+}
+
+.ft-session-log-item:hover {
+  background: var(--vl-bg-secondary);
+}
+
+.ft-session-log-item:last-child {
+  border-bottom: none;
+}
+
+.ft-session-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--vl-radius-full);
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ft-session-type-badge-work { background: rgba(16, 185, 129, 0.15); color: #059669; }
+.ft-session-type-badge-short-break { background: rgba(6, 182, 212, 0.15); color: #0891b2; }
+.ft-session-type-badge-long-break { background: rgba(59, 130, 246, 0.15); color: #2563eb; }
+.ft-session-type-badge-deep-work { background: rgba(139, 92, 246, 0.15); color: #7c3aed; }
+.ft-session-type-badge-countdown { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+.ft-session-type-badge-stopwatch { background: rgba(236, 72, 153, 0.15); color: #db2777; }
+
+.ft-session-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ft-session-task {
+  font-size: var(--vl-text-sm);
+  font-weight: 500;
+  color: var(--vl-text-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ft-session-meta {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-2);
+}
+
+.ft-session-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--vl-text-xs);
+  font-weight: 500;
+}
+
+.ft-session-status-completed { color: #10b981; }
+.ft-session-status-abandoned { color: #ef4444; }
+
+.ft-session-notes-preview {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: var(--vl-text-xs-lh);
+}
+
+.ft-session-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--vl-space-10) var(--vl-space-6);
+  text-align: center;
+}
+
+.ft-session-empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--vl-radius-xl);
+  background: var(--vl-bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--vl-space-3);
+  color: var(--vl-text-muted);
+}
+
+.ft-session-empty-title {
+  font-size: var(--vl-text-base);
+  font-weight: 600;
+  color: var(--vl-text-heading);
+  margin-bottom: var(--vl-space-1);
+}
+
+.ft-session-empty-desc {
+  font-size: var(--vl-text-sm);
+  color: var(--vl-text-muted);
+}
+
+/* ============================================================
+   Goal Progress Bar
+   ============================================================ */
+
+.ft-goal-progress {
+  width: 100%;
+  padding: var(--vl-space-4);
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: var(--vl-radius-lg);
+}
+
+.ft-goal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--vl-space-3);
+}
+
+.ft-goal-title {
+  font-size: var(--vl-text-sm);
+  font-weight: 600;
+  color: var(--vl-text-heading);
+}
+
+.ft-goal-count {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ft-goal-bar-track {
+  width: 100%;
+  height: 10px;
+  border-radius: var(--vl-radius-full);
+  background: var(--vl-bg-secondary);
+  overflow: hidden;
+  position: relative;
+}
+
+.ft-goal-bar-fill {
+  height: 100%;
+  border-radius: var(--vl-radius-full);
+  background: linear-gradient(90deg, #10b981, #34d399);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.ft-goal-bar-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: ft-progress-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes ft-progress-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.ft-goal-milestones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--vl-space-2);
+}
+
+.ft-goal-milestone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.ft-goal-milestone-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vl-border-subtle);
+  transition: background var(--vl-transition-fast);
+}
+
+.ft-goal-milestone-dot-reached {
+  background: #10b981;
+}
+
+.ft-goal-milestone-label {
+  font-size: 9px;
+  color: var(--vl-text-muted);
+}
+
+/* ============================================================
+   Stat Cards
+   ============================================================ */
+
+.ft-stat-card {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: var(--vl-radius-lg);
+  padding: var(--vl-space-4) var(--vl-space-5);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--vl-space-3);
+  transition: transform var(--vl-transition-base), box-shadow var(--vl-transition-base);
+}
+
+.ft-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--vl-shadow-glow);
+}
+
+.ft-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--vl-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ft-stat-icon-emerald { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.ft-stat-icon-cyan { background: rgba(6, 182, 212, 0.15); color: #06b6d4; }
+.ft-stat-icon-amber { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.ft-stat-icon-violet { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+.ft-stat-icon-blue { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+.ft-stat-icon-pink { background: rgba(236, 72, 153, 0.15); color: #ec4899; }
+
+.ft-stat-label {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-bottom: var(--vl-space-1);
+  font-weight: 500;
+}
+
+.ft-stat-value {
+  font-size: var(--vl-text-2xl);
+  font-weight: 800;
+  color: var(--vl-text-heading);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.ft-stat-sub {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: var(--vl-space-1);
+}
+
+/* ============================================================
+   Custom Timer Duration Inputs
+   ============================================================ */
+
+.ft-custom-inputs {
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-3);
+  flex-wrap: wrap;
+}
+
+.ft-custom-input-group {
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-2);
+}
+
+.ft-custom-input-label {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  font-weight: 500;
+}
+
+.ft-custom-input {
+  width: 64px;
+  background: var(--vl-bg-input);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: var(--vl-radius-md);
+  padding: var(--vl-space-2) var(--vl-space-3);
+  font-size: var(--vl-text-sm);
+  color: var(--vl-text-primary);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+  transition: border-color var(--vl-transition-fast), box-shadow var(--vl-transition-fast);
+}
+
+.ft-custom-input:focus {
+  border-color: var(--vl-accent);
+  box-shadow: 0 0 0 3px var(--vl-accent-bg);
+}
+
+/* ============================================================
+   Session Notes Input
+   ============================================================ */
+
+.ft-notes-input {
+  width: 100%;
+  background: var(--vl-bg-input);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: var(--vl-radius-md);
+  padding: var(--vl-space-3) var(--vl-space-4);
+  font-size: var(--vl-text-sm);
+  color: var(--vl-text-primary);
+  resize: vertical;
+  min-height: 60px;
+  outline: none;
+  transition: border-color var(--vl-transition-fast), box-shadow var(--vl-transition-fast);
+  line-height: var(--vl-text-sm-lh);
+}
+
+.ft-notes-input:focus {
+  border-color: var(--vl-accent);
+  box-shadow: 0 0 0 3px var(--vl-accent-bg);
+}
+
+.ft-notes-input::placeholder {
+  color: var(--vl-text-muted);
+  opacity: 0.6;
+}
+
+/* ============================================================
+   Productivity Dashboard — Heatmap
+   ============================================================ */
+
+.pd-heatmap {
+  display: grid;
+  grid-template-columns: 50px repeat(7, 1fr);
+  gap: 3px;
+  max-width: 100%;
+}
+
+.pd-heatmap-header {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  text-align: center;
+  padding: var(--vl-space-1);
+  font-weight: 500;
+}
+
+.pd-heatmap-label {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  display: flex;
+  align-items: center;
+  padding-right: var(--vl-space-2);
+  font-weight: 500;
+}
+
+.pd-heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: var(--vl-radius-sm);
+  transition: transform var(--vl-transition-fast), box-shadow var(--vl-transition-fast);
+  min-height: 20px;
+  cursor: default;
+  position: relative;
+}
+
+.pd-heatmap-cell:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+.pd-heatmap-level-0 { background: var(--vl-bg-secondary); border: 1px solid var(--vl-border-subtle); }
+.pd-heatmap-level-1 { background: rgba(16, 185, 129, 0.15); }
+.pd-heatmap-level-2 { background: rgba(16, 185, 129, 0.3); }
+.pd-heatmap-level-3 { background: rgba(16, 185, 129, 0.5); }
+.pd-heatmap-level-4 { background: rgba(16, 185, 129, 0.7); }
+.pd-heatmap-level-5 { background: #10b981; }
+
+.pd-heatmap-tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--vl-text-primary);
+  color: var(--vl-bg-primary);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--vl-transition-fast);
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pd-heatmap-cell:hover .pd-heatmap-tooltip {
+  opacity: 1;
+}
+
+.pd-heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--vl-space-2);
+  justify-content: flex-end;
+}
+
+.pd-heatmap-legend-label {
+  font-size: 10px;
+  color: var(--vl-text-muted);
+}
+
+.pd-heatmap-legend-cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   Productivity Dashboard — Timeline
+   ============================================================ */
+
+.pd-timeline {
+  position: relative;
+  padding-left: var(--vl-space-8);
+}
+
+.pd-timeline::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--vl-border);
+  border-radius: 1px;
+}
+
+.pd-timeline-item {
+  position: relative;
+  padding-bottom: var(--vl-space-5);
+  animation: ft-fade-in 0.4s ease forwards;
+}
+
+.pd-timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.pd-timeline-dot {
+  position: absolute;
+  left: calc(-1 * var(--vl-space-8) + 5px);
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--vl-bg-card);
+  z-index: 1;
+}
+
+.pd-timeline-dot-work { background: #10b981; }
+.pd-timeline-dot-short-break { background: #06b6d4; }
+.pd-timeline-dot-long-break { background: #3b82f6; }
+.pd-timeline-dot-deep-work { background: #8b5cf6; }
+.pd-timeline-dot-countdown { background: #f59e0b; }
+.pd-timeline-dot-stopwatch { background: #ec4899; }
+
+.pd-timeline-content {
+  background: var(--vl-bg-secondary);
+  border-radius: var(--vl-radius-md);
+  padding: var(--vl-space-3) var(--vl-space-4);
+  transition: background var(--vl-transition-fast);
+}
+
+.pd-timeline-content:hover {
+  background: var(--vl-bg-card);
+  box-shadow: var(--vl-shadow-sm);
+}
+
+.pd-timeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vl-space-2);
+  margin-bottom: 4px;
+}
+
+.pd-timeline-type {
+  font-size: var(--vl-text-xs);
+  font-weight: 600;
+  color: var(--vl-text-heading);
+}
+
+.pd-timeline-time {
+  font-size: 10px;
+  color: var(--vl-text-muted);
+}
+
+.pd-timeline-duration {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.pd-timeline-notes {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: var(--vl-space-2);
+  padding-top: var(--vl-space-2);
+  border-top: 1px solid var(--vl-border-subtle);
+  line-height: var(--vl-text-xs-lh);
+}
+
+.pd-timeline-notes-toggle {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-accent);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-weight: 500;
+  outline: none;
+}
+
+.pd-timeline-notes-toggle:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   Productivity Dashboard — Donut Chart (SVG)
+   ============================================================ */
+
+.pd-donut-chart {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-donut-chart svg {
+  transform: rotate(-90deg);
+}
+
+.pd-donut-ring {
+  fill: none;
+  stroke-width: 10;
+  transition: stroke-dasharray 0.8s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pd-donut-center {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-donut-center-value {
+  font-size: var(--vl-text-2xl);
+  font-weight: 800;
+  color: var(--vl-text-heading);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.pd-donut-center-label {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: 2px;
+}
+
+.pd-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vl-space-2);
+  margin-top: var(--vl-space-4);
+}
+
+.pd-donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-2);
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-secondary);
+}
+
+.pd-donut-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.pd-donut-legend-value {
+  margin-left: auto;
+  font-weight: 600;
+  color: var(--vl-text-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Productivity Dashboard — Streak Calendar
+   ============================================================ */
+
+.pd-streak-calendar {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+}
+
+.pd-streak-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  min-height: 16px;
+  cursor: default;
+  transition: transform var(--vl-transition-fast);
+  position: relative;
+}
+
+.pd-streak-cell:hover {
+  transform: scale(1.25);
+}
+
+.pd-streak-cell-today {
+  outline: 2px solid var(--vl-accent);
+  outline-offset: 1px;
+}
+
+.pd-streak-month-label {
+  font-size: 10px;
+  color: var(--vl-text-muted);
+  font-weight: 500;
+}
+
+/* ============================================================
+   Productivity Dashboard — Hourly Bar Chart (SVG)
+   ============================================================ */
+
+.pd-hourly-chart {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.pd-hourly-chart svg {
+  width: 100%;
+  min-width: 400px;
+}
+
+.pd-hourly-bar {
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  cursor: default;
+}
+
+.pd-hourly-bar:hover {
+  opacity: 0.8;
+}
+
+.pd-hourly-label {
+  fill: var(--vl-text-muted);
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+.pd-hourly-value {
+  fill: var(--vl-text-muted);
+  font-size: 9px;
+  text-anchor: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Productivity Dashboard — Focus Score
+   ============================================================ */
+
+.pd-focus-score {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-focus-score svg {
+  transform: rotate(-90deg);
+}
+
+.pd-focus-score-track {
+  fill: none;
+  stroke: var(--vl-bg-secondary);
+  stroke-width: 8;
+}
+
+.pd-focus-score-fill {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pd-focus-score-center {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-focus-score-value {
+  font-size: var(--vl-text-3xl);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.pd-focus-score-label {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: 2px;
+}
+
+.pd-focus-score-grade {
+  font-size: var(--vl-text-sm);
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   Productivity Dashboard — Highlights Cards
+   ============================================================ */
+
+.pd-highlight-card {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: var(--vl-radius-lg);
+  padding: var(--vl-space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-4);
+  transition: transform var(--vl-transition-base), box-shadow var(--vl-transition-base);
+}
+
+.pd-highlight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--vl-shadow-glow);
+}
+
+.pd-highlight-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--vl-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+.pd-highlight-icon-gold { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.pd-highlight-icon-emerald { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.pd-highlight-icon-violet { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+
+.pd-highlight-label {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-bottom: 2px;
+}
+
+.pd-highlight-value {
+  font-size: var(--vl-text-lg);
+  font-weight: 800;
+  color: var(--vl-text-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+.pd-highlight-sub {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: 2px;
+}
+
+/* ============================================================
+   Productivity Dashboard — Weekly Goal Ring
+   ============================================================ */
+
+.pd-weekly-goal {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-weekly-goal svg {
+  transform: rotate(-90deg);
+}
+
+.pd-weekly-goal-track {
+  fill: none;
+  stroke: var(--vl-bg-secondary);
+  stroke-width: 10;
+}
+
+.pd-weekly-goal-fill {
+  fill: none;
+  stroke: #10b981;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pd-weekly-goal-center {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-weekly-goal-value {
+  font-size: var(--vl-text-2xl);
+  font-weight: 800;
+  color: var(--vl-text-heading);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.pd-weekly-goal-label {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: 2px;
+}
+
+/* ============================================================
+   Productivity Dashboard — Export
+   ============================================================ */
+
+.pd-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--vl-space-2);
+  padding: var(--vl-space-2) var(--vl-space-4);
+  border-radius: var(--vl-radius-md);
+  font-size: var(--vl-text-xs);
+  font-weight: 500;
+  background: var(--vl-bg-secondary);
+  color: var(--vl-text-secondary);
+  border: 1px solid var(--vl-border-subtle);
+  cursor: pointer;
+  transition: all var(--vl-transition-fast);
+  outline: none;
+}
+
+.pd-export-btn:hover {
+  border-color: var(--vl-accent);
+  color: var(--vl-accent);
+  background: var(--vl-accent-bg);
+}
+
+/* ============================================================
+   Productivity Dashboard — Summary Card
+   ============================================================ */
+
+.pd-summary-card {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: var(--vl-radius-lg);
+  padding: var(--vl-space-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--vl-space-5);
+}
+
+.pd-summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.pd-summary-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--vl-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--vl-space-2);
+}
+
+.pd-summary-label {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-bottom: var(--vl-space-1);
+  font-weight: 500;
+}
+
+.pd-summary-value {
+  font-size: var(--vl-text-2xl);
+  font-weight: 800;
+  color: var(--vl-text-heading);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.pd-summary-sub {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin-top: var(--vl-space-1);
+}
+
+/* ============================================================
+   Productivity Dashboard — Section Card
+   ============================================================ */
+
+.pd-section {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: var(--vl-radius-lg);
+  padding: var(--vl-space-6);
+}
+
+.pd-section-title {
+  font-size: var(--vl-text-sm);
+  font-weight: 700;
+  color: var(--vl-text-heading);
+  margin-bottom: var(--vl-space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--vl-space-2);
+}
+
+/* ============================================================
+   Keyframe Animations
+   ============================================================ */
+
+@keyframes ft-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ft-slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ft-ring-fill {
+  from { stroke-dashoffset: var(--ft-ring-circumference); }
+  to { stroke-dashoffset: var(--ft-ring-target); }
+}
+
+@keyframes ft-counter-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes ft-score-reveal {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.ft-animate-fade-in {
+  animation: ft-fade-in 0.4s ease forwards;
+}
+
+.ft-animate-slide-up {
+  animation: ft-slide-up 0.5s ease forwards;
+}
+
+.ft-animate-score {
+  animation: ft-score-reveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Staggered entrance */
+.ft-animate-fade-in:nth-child(1) { animation-delay: 0ms; }
+.ft-animate-fade-in:nth-child(2) { animation-delay: 50ms; }
+.ft-animate-fade-in:nth-child(3) { animation-delay: 100ms; }
+.ft-animate-fade-in:nth-child(4) { animation-delay: 150ms; }
+.ft-animate-fade-in:nth-child(5) { animation-delay: 200ms; }
+.ft-animate-fade-in:nth-child(6) { animation-delay: 250ms; }
+
+/* ============================================================
+   Responsive — Mobile Optimizations
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .ft-container {
+    padding: var(--vl-space-4);
+    gap: var(--vl-space-4);
+  }
+
+  .ft-timer-ring {
+    width: 200px;
+    height: 200px;
+  }
+
+  .ft-timer-display {
+    font-size: 36px;
+  }
+
+  .ft-timer-display-small {
+    font-size: 28px;
+  }
+
+  .ft-mode-selector {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .ft-mode-selector::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ft-mode-tab {
+    padding: var(--vl-space-2) var(--vl-space-3);
+    font-size: 11px;
+  }
+
+  .ft-controls {
+    gap: var(--vl-space-4);
+  }
+
+  .ft-control-btn {
+    width: 52px;
+    height: 52px;
+  }
+
+  .ft-control-btn-primary {
+    width: 60px;
+    height: 60px;
+  }
+
+  .ft-stat-card {
+    padding: var(--vl-space-3) var(--vl-space-4);
+  }
+
+  .ft-stat-value {
+    font-size: var(--vl-text-xl);
+  }
+
+  .ft-stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .ft-custom-inputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ft-session-log-item {
+    flex-direction: column;
+    gap: var(--vl-space-2);
+  }
+
+  .ft-session-type-badge {
+    align-self: flex-start;
+  }
+
+  .pd-heatmap {
+    grid-template-columns: 40px repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  .pd-heatmap-cell {
+    min-height: 16px;
+  }
+
+  .pd-summary-card {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--vl-space-3);
+  }
+
+  .pd-streak-calendar {
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .pd-section {
+    padding: var(--vl-space-4);
+  }
+
+  .pd-notification-toast {
+    right: var(--vl-space-3);
+    left: var(--vl-space-3);
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .ft-container {
+    padding: var(--vl-space-3);
+  }
+
+  .ft-timer-ring {
+    width: 180px;
+    height: 180px;
+  }
+
+  .ft-timer-display {
+    font-size: 32px;
+  }
+
+  .ft-control-btn {
+    width: 46px;
+    height: 46px;
+  }
+
+  .ft-control-btn-primary {
+    width: 56px;
+    height: 56px;
+  }
+
+  .ft-controls {
+    gap: var(--vl-space-3);
+  }
+
+  .pd-summary-card {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--vl-space-2);
+  }
+
+  .pd-summary-value {
+    font-size: var(--vl-text-lg);
+  }
+
+  .pd-streak-calendar {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  .pd-streak-cell {
+    min-height: 14px;
+  }
+
+  .ft-glow-border {
+    border-width: 2px;
+  }
+}
+
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+
+.ft-session-log::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ft-session-log::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ft-session-log::-webkit-scrollbar-thumb {
+  background: var(--vl-border);
+  border-radius: 3px;
+}
+
+.ft-session-log::-webkit-scrollbar-thumb:hover {
+  background: var(--vl-text-muted);
+}

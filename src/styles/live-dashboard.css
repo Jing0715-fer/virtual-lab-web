@@ -1,0 +1,411 @@
+/* ============================================================
+   Live Dashboard CSS — Animations, Widgets & Health Indicators
+   ============================================================ */
+
+/* ============================================================
+   @keyframes: Pulse animation for health dots
+   ============================================================ */
+@keyframes live-pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+
+@keyframes live-pulse-amber {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+}
+
+@keyframes live-pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+.live-health-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.live-health-dot--green {
+  background: #10b981;
+  animation: live-pulse-green 2s ease-in-out infinite;
+}
+
+.live-health-dot--amber {
+  background: #f59e0b;
+  animation: live-pulse-amber 2s ease-in-out infinite;
+}
+
+.live-health-dot--red {
+  background: #ef4444;
+  animation: live-pulse-red 1.5s ease-in-out infinite;
+}
+
+/* ============================================================
+   @keyframes: Heartbeat line drawing animation
+   ============================================================ */
+@keyframes heartbeat-draw {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+.live-heartbeat-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 0;
+  animation: heartbeat-draw 2s ease-out forwards;
+}
+
+.live-heartbeat-line--animating {
+  animation: heartbeat-draw 2s ease-out forwards;
+}
+
+/* ============================================================
+   @keyframes: Activity ring fill animation (Apple Watch style)
+   ============================================================ */
+@keyframes ring-fill {
+  from { stroke-dashoffset: var(--ring-circumference); }
+  to { stroke-dashoffset: var(--ring-target-offset); }
+}
+
+.live-ring {
+  transition: stroke-dashoffset 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.live-ring--animating {
+  animation: ring-fill 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ============================================================
+   @keyframes: Notification ticker scrolling
+   ============================================================ */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.live-ticker-track {
+  display: flex;
+  animation: ticker-scroll var(--ticker-duration, 30s) linear infinite;
+}
+
+.live-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   @keyframes: Shimmer loading state
+   ============================================================ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.live-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--vl-bg-card) 25%,
+    var(--vl-bg-card-hover) 50%,
+    var(--vl-bg-card) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--vl-radius-md);
+}
+
+/* ============================================================
+   @keyframes: Glow on widget update
+   ============================================================ */
+@keyframes widget-glow {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 0 20px 4px rgba(16, 185, 129, 0.15); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.live-widget-card {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border);
+  border-radius: var(--vl-radius-xl);
+  backdrop-filter: blur(12px);
+  transition: all var(--vl-transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.live-widget-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--vl-accent),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity var(--vl-transition-base);
+}
+
+.live-widget-card:hover {
+  border-color: var(--vl-border-accent);
+  box-shadow: var(--vl-shadow-glow);
+}
+
+.live-widget-card:hover::before {
+  opacity: 1;
+}
+
+.live-widget-card--updating {
+  animation: widget-glow 0.8s ease-out;
+}
+
+/* ============================================================
+   @keyframes: Refresh button spin
+   ============================================================ */
+@keyframes refresh-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.live-refresh-btn--spinning svg {
+  animation: refresh-spin 0.8s linear infinite;
+}
+
+/* ============================================================
+   @keyframes: Fade in edges for ticker
+   ============================================================ */
+.live-ticker-fade-left,
+.live-ticker-fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.live-ticker-fade-left {
+  left: 0;
+  background: linear-gradient(to right, var(--vl-bg-card), transparent);
+}
+
+.live-ticker-fade-right {
+  right: 0;
+  background: linear-gradient(to left, var(--vl-bg-card), transparent);
+}
+
+/* ============================================================
+   Responsive Grid: 2x2 mobile, 3-col desktop
+   ============================================================ */
+.live-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .live-dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .live-dashboard-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Widget spans full width on small screens, 2 cols on medium, 3 on large */
+.live-widget--wide {
+  grid-column: span 1;
+}
+
+@media (min-width: 640px) {
+  .live-widget--wide {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .live-widget--wide {
+    grid-column: span 2;
+  }
+}
+
+/* ============================================================
+   Monospace numbers for metrics
+   ============================================================ */
+.live-mono {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================
+   Sparkline mini chart
+   ============================================================ */
+.live-sparkline {
+  overflow: visible;
+}
+
+.live-sparkline path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.live-sparkline-fill {
+  opacity: 0.1;
+}
+
+/* ============================================================
+   Health grid cell
+   ============================================================ */
+.live-health-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: var(--vl-radius-lg);
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+  transition: all var(--vl-transition-fast);
+}
+
+.live-health-cell:hover {
+  background: var(--vl-bg-card-hover);
+}
+
+/* ============================================================
+   Notification color coding
+   ============================================================ */
+.live-notification--meeting {
+  border-left: 3px solid #10b981;
+}
+
+.live-notification--agent {
+  border-left: 3px solid #06b6d4;
+}
+
+.live-notification--system {
+  border-left: 3px solid #f59e0b;
+}
+
+/* ============================================================
+   Ring legend item
+   ============================================================ */
+.live-ring-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+}
+
+.live-ring-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Countdown text animation
+   ============================================================ */
+@keyframes countdown-tick {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.live-countdown {
+  animation: countdown-tick 1s ease-in-out infinite;
+}
+
+/* ============================================================
+   Trend arrow animations
+   ============================================================ */
+@keyframes trend-up {
+  0% { transform: translateY(4px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes trend-down {
+  0% { transform: translateY(-4px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.live-trend--up {
+  animation: trend-up 0.3s ease-out;
+  color: #10b981;
+}
+
+.live-trend--stable {
+  animation: trend-up 0.3s ease-out;
+  color: var(--vl-text-muted);
+}
+
+.live-trend--down {
+  animation: trend-down 0.3s ease-out;
+  color: #ef4444;
+}
+
+/* ============================================================
+   Settings panel slider track
+   ============================================================ */
+.live-interval-slider {
+  accent-color: var(--vl-accent);
+}
+
+/* ============================================================
+   Refresh schedule visual
+   ============================================================ */
+.live-schedule-bar {
+  height: 6px;
+  border-radius: var(--vl-radius-full);
+  background: var(--vl-bg-inner);
+  overflow: hidden;
+  position: relative;
+}
+
+.live-schedule-bar-fill {
+  height: 100%;
+  border-radius: var(--vl-radius-full);
+  background: var(--vl-accent);
+  transition: width var(--vl-transition-slow);
+}
+
+/* ============================================================
+   Dark mode overrides for specific elements
+   ============================================================ */
+.dark .live-widget-card {
+  background: var(--vl-bg-card);
+  border-color: var(--vl-border);
+}
+
+.dark .live-ticker-fade-left {
+  background: linear-gradient(to right, var(--vl-bg-card), transparent);
+}
+
+.dark .live-ticker-fade-right {
+  background: linear-gradient(to left, var(--vl-bg-card), transparent);
+}
+
+.dark .live-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(30, 41, 59, 0.5) 25%,
+    rgba(51, 65, 85, 0.5) 50%,
+    rgba(30, 41, 59, 0.5) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}

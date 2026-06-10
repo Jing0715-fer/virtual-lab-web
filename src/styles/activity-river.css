@@ -1,0 +1,867 @@
+/* ============================================================
+   Activity River Styles
+   Prefix: .ar-*
+   ============================================================ */
+
+/* ─── River Header ────────────────────────────────────────── */
+
+.ar-header {
+  position: relative;
+  padding: 32px 24px 24px;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.06) 0%, rgba(139, 92, 246, 0.04) 50%, rgba(16, 185, 129, 0.06) 100%);
+  border-bottom: 1px solid var(--vl-border, #e5e7eb);
+}
+
+.ar-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.3), rgba(139, 92, 246, 0.3), transparent);
+}
+
+.ar-live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10b981;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ar-live-dot::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.3);
+  animation: ar-pulse-live 2s ease-in-out infinite;
+}
+
+.ar-live-dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.1);
+  animation: ar-pulse-live 2s ease-in-out infinite 0.3s;
+}
+
+@keyframes ar-pulse-live {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
+.ar-paused .ar-live-dot {
+  background: #6b7280;
+}
+
+.ar-paused .ar-live-dot::before,
+.ar-paused .ar-live-dot::after {
+  animation: none;
+  opacity: 0;
+}
+
+/* ─── Mentions Banner ──────────────────────────────────────── */
+
+.ar-mentions-banner {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08));
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--vl-text-secondary, #374151);
+  animation: ar-fade-in-down 0.4s ease;
+}
+
+/* ─── River Timeline ─────────────────────────────────────── */
+
+.ar-river-container {
+  position: relative;
+  display: flex;
+  min-height: 400px;
+}
+
+.ar-timeline-line {
+  position: absolute;
+  left: 40px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 182, 212, 0.1),
+    rgba(16, 185, 129, 0.15),
+    rgba(139, 92, 246, 0.1)
+  );
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.ar-timeline-glow {
+  position: absolute;
+  left: 39px;
+  top: 0;
+  width: 5px;
+  height: 80px;
+  background: linear-gradient(180deg, rgba(6, 182, 212, 0.6), transparent);
+  border-radius: 3px;
+  z-index: 2;
+  animation: ar-river-flow 3s ease-in-out infinite;
+}
+
+@keyframes ar-river-flow {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.ar-timeline-node {
+  position: absolute;
+  left: 32px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 3px solid var(--vl-bg-primary, #fafbfc);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.ar-timeline-node:hover {
+  transform: scale(1.3);
+  z-index: 10;
+}
+
+.ar-timeline-connector {
+  position: absolute;
+  left: 51px;
+  width: 20px;
+  height: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  opacity: 0.3;
+}
+
+.ar-feed-area {
+  flex: 1;
+  padding-left: 72px;
+  padding-right: 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── Activity Item Cards ─────────────────────────────────── */
+
+.ar-activity-item {
+  position: relative;
+  padding: 14px 20px;
+  margin-bottom: 2px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  animation: ar-slide-in 0.35s ease forwards;
+  opacity: 0;
+}
+
+.ar-activity-item:hover {
+  background: var(--vl-bg-card, rgba(255, 255, 255, 0.6));
+}
+
+.ar-activity-item + .ar-activity-item {
+  border-top: 1px solid var(--vl-border-subtle, rgba(229, 231, 235, 0.3));
+}
+
+/* Activity type specific styles */
+.ar-activity-message {
+  --ar-accent: #3b82f6;
+}
+
+.ar-activity-message .ar-activity-icon-bg {
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+}
+
+.ar-activity-message .ar-activity-preview {
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.12);
+  border-radius: 10px;
+  border-left: 3px solid #3b82f6;
+}
+
+.ar-activity-decision {
+  --ar-accent: #f59e0b;
+}
+
+.ar-activity-decision .ar-activity-icon-bg {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+}
+
+.ar-activity-upload {
+  --ar-accent: #8b5cf6;
+}
+
+.ar-activity-upload .ar-activity-icon-bg {
+  background: rgba(139, 92, 246, 0.12);
+  color: #8b5cf6;
+}
+
+.ar-activity-upload .ar-activity-preview {
+  background: rgba(139, 92, 246, 0.05);
+  border: 1px solid rgba(139, 92, 246, 0.12);
+  border-radius: 10px;
+}
+
+.ar-activity-meeting {
+  --ar-accent: #10b981;
+}
+
+.ar-activity-meeting .ar-activity-icon-bg {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+
+.ar-activity-meeting .ar-activity-preview {
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.12);
+  border-radius: 10px;
+}
+
+.ar-activity-review {
+  --ar-accent: #06b6d4;
+}
+
+.ar-activity-review .ar-activity-icon-bg {
+  background: rgba(6, 182, 212, 0.12);
+  color: #06b6d4;
+}
+
+.ar-activity-review .ar-activity-preview {
+  background: rgba(6, 182, 212, 0.05);
+  border: 1px solid rgba(6, 182, 212, 0.12);
+  border-radius: 10px;
+}
+
+.ar-activity-completion {
+  --ar-accent: #22c55e;
+}
+
+.ar-activity-completion .ar-activity-icon-bg {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+}
+
+.ar-activity-system {
+  --ar-accent: #6b7280;
+}
+
+.ar-activity-system .ar-activity-icon-bg {
+  background: rgba(107, 114, 128, 0.08);
+  color: #6b7280;
+}
+
+.ar-activity-system {
+  opacity: 0.65;
+  font-size: 12px;
+}
+
+/* ─── Activity Item Internal Layout ───────────────────────── */
+
+.ar-activity-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ar-activity-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ar-activity-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ar-activity-actor {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vl-text-primary, #0f172a);
+}
+
+.ar-activity-action {
+  font-size: 13px;
+  color: var(--vl-text-secondary, #374151);
+}
+
+.ar-activity-target {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vl-accent, #10b981);
+  cursor: pointer;
+}
+
+.ar-activity-target:hover {
+  text-decoration: underline;
+}
+
+.ar-activity-time {
+  font-size: 11px;
+  color: var(--vl-text-muted, #6b7280);
+  margin-top: 2px;
+}
+
+.ar-activity-absolute-time {
+  margin-left: 4px;
+  opacity: 0.6;
+}
+
+.ar-activity-preview {
+  padding: 10px 14px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--vl-text-secondary, #374151);
+  line-height: 1.5;
+}
+
+.ar-activity-meta {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.ar-meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  background: var(--vl-bg-secondary, #f1f3f5);
+  color: var(--vl-text-muted, #6b7280);
+  border: 1px solid var(--vl-border-subtle, rgba(229, 231, 235, 0.5));
+}
+
+.ar-activity-icon-bg {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ─── Mention Highlights ─────────────────────────────────── */
+
+.ar-mention-highlight {
+  position: relative;
+  border-left: 3px solid #8b5cf6;
+  padding-left: 12px;
+}
+
+.ar-mention-highlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: rgba(139, 92, 246, 0.06);
+  animation: ar-mention-pulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ar-mention-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ─── Activity Clusters ──────────────────────────────────── */
+
+.ar-cluster {
+  position: relative;
+  margin-bottom: 4px;
+  animation: ar-slide-in 0.35s ease forwards;
+  opacity: 0;
+}
+
+.ar-cluster-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--vl-bg-card, #fff);
+  border: 1px solid var(--vl-border, #e5e7eb);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ar-cluster-header:hover {
+  background: var(--vl-bg-card-hover, #f1f3f5);
+  border-color: var(--vl-accent, #10b981);
+}
+
+.ar-cluster-count {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--vl-accent, #10b981);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ar-cluster-items {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.ar-cluster-expanded .ar-cluster-items {
+  max-height: 2000px;
+}
+
+.ar-cluster-collapsed .ar-cluster-items {
+  max-height: 0;
+}
+
+/* ─── Activity Analytics Sidebar ──────────────────────────── */
+
+.ar-analytics-panel {
+  width: 320px;
+  flex-shrink: 0;
+  padding-left: 16px;
+}
+
+.ar-analytics-card {
+  background: var(--vl-bg-card, #fff);
+  border: 1px solid var(--vl-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.ar-analytics-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vl-text-primary, #0f172a);
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── Heatmap ─────────────────────────────────────────────── */
+
+.ar-heatmap-grid {
+  display: grid;
+  grid-template-columns: 50px repeat(24, 1fr);
+  grid-template-rows: repeat(7, 18px);
+  gap: 2px;
+}
+
+.ar-heatmap-cell {
+  border-radius: 2px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.ar-heatmap-cell:hover {
+  transform: scale(1.3);
+  z-index: 10;
+  position: relative;
+}
+
+.ar-heatmap-label {
+  font-size: 9px;
+  color: var(--vl-text-muted, #6b7280);
+  display: flex;
+  align-items: center;
+  padding-right: 6px;
+}
+
+.ar-heatmap-hour-label {
+  font-size: 8px;
+  color: var(--vl-text-muted, #6b7280);
+  text-align: center;
+  position: relative;
+  top: -22px;
+}
+
+/* ─── Donut Chart ──────────────────────────────────────────── */
+
+.ar-donut-segment {
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.ar-donut-segment:hover {
+  opacity: 0.8;
+}
+
+/* ─── Sparkline ──────────────────────────────────────────── */
+
+.ar-sparkline-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 40px;
+}
+
+.ar-sparkline-bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  transition: height 0.3s ease;
+  min-width: 4px;
+}
+
+/* ─── Top Contributors ──────────────────────────────────────── */
+
+.ar-contributor-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--vl-border-subtle, rgba(229, 231, 235, 0.4));
+}
+
+.ar-contributor-row:last-child {
+  border-bottom: none;
+}
+
+.ar-contributor-bar {
+  height: 6px;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.ar-contributor-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--vl-text-primary, #0f172a);
+  min-width: 24px;
+  text-align: right;
+}
+
+/* ─── Filter Bar ──────────────────────────────────────────── */
+
+.ar-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ar-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--vl-border, #e5e7eb);
+  background: var(--vl-bg-card, #fff);
+  color: var(--vl-text-secondary, #374151);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ar-filter-chip:hover {
+  background: var(--vl-bg-secondary, #f1f3f5);
+}
+
+.ar-filter-chip-active {
+  background: var(--vl-accent-bg, rgba(16, 185, 129, 0.1));
+  border-color: var(--vl-accent, #10b981);
+  color: var(--vl-accent, #10b981);
+}
+
+.ar-filter-count-badge {
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* ─── Load More Button ────────────────────────────────────── */
+
+.ar-load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 10px;
+  border: 1px dashed var(--vl-border, #e5e7eb);
+  background: transparent;
+  color: var(--vl-text-muted, #6b7280);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ar-load-more:hover {
+  border-color: var(--vl-accent, #10b981);
+  color: var(--vl-accent, #10b981);
+  background: var(--vl-accent-bg, rgba(16, 185, 129, 0.05));
+}
+
+/* ─── Animation Keyframes ─────────────────────────────────── */
+
+@keyframes ar-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ar-fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ar-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ar-cluster-expand {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 2000px;
+    opacity: 1;
+  }
+}
+
+@keyframes ar-scale-bounce {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.ar-animated-in {
+  animation: ar-slide-in 0.35s ease forwards;
+}
+
+/* ─── Collapsible Analytics Toggle ────────────────────────── */
+
+.ar-analytics-toggle {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--vl-bg-card, #fff);
+  border: 1px solid var(--vl-border, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 40;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.ar-analytics-toggle:hover {
+  background: var(--vl-accent-bg, rgba(16, 185, 129, 0.1));
+  border-color: var(--vl-accent, #10b981);
+}
+
+/* ─── Responsive Breakpoints ──────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .ar-analytics-panel {
+    width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ar-analytics-panel {
+    display: none;
+  }
+
+  .ar-timeline-line,
+  .ar-timeline-glow,
+  .ar-timeline-node,
+  .ar-timeline-connector {
+    display: none;
+  }
+
+  .ar-feed-area {
+    padding-left: 0;
+  }
+
+  .ar-activity-item {
+    padding: 12px 14px;
+  }
+
+  .ar-heatmap-grid {
+    grid-template-columns: 40px repeat(24, 1fr);
+    grid-template-rows: repeat(7, 14px);
+  }
+}
+
+@media (max-width: 640px) {
+  .ar-header {
+    padding: 20px 16px 18px;
+  }
+
+  .ar-filter-bar {
+    gap: 6px;
+  }
+
+  .ar-activity-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
+  }
+
+  .ar-mentions-banner {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+}
+
+/* ─── Dark Mode ───────────────────────────────────────────── */
+
+.dark .ar-header {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.04) 0%, rgba(139, 92, 246, 0.03) 50%, rgba(16, 185, 129, 0.04) 100%);
+  border-bottom-color: rgba(51, 65, 85, 0.5);
+}
+
+.dark .ar-timeline-line {
+  background: linear-gradient(180deg, rgba(6, 182, 212, 0.15), rgba(16, 185, 129, 0.2), rgba(139, 92, 246, 0.15));
+}
+
+.dark .ar-timeline-node {
+  border-color: var(--vl-bg-primary, #020617);
+}
+
+.dark .ar-activity-item:hover {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+.dark .ar-activity-message .ar-activity-preview {
+  background: rgba(59, 130, 246, 0.06);
+  border-color: rgba(59, 130, 246, 0.15);
+}
+
+.dark .ar-activity-upload .ar-activity-preview {
+  background: rgba(139, 92, 246, 0.06);
+  border-color: rgba(139, 92, 246, 0.15);
+}
+
+.dark .ar-activity-meeting .ar-activity-preview {
+  background: rgba(16, 185, 129, 0.06);
+  border-color: rgba(16, 185, 129, 0.15);
+}
+
+.dark .ar-activity-review .ar-activity-preview {
+  background: rgba(6, 182, 212, 0.06);
+  border-color: rgba(6, 182, 212, 0.15);
+}
+
+.dark .ar-mention-highlight::before {
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.dark .ar-cluster-header {
+  background: rgba(30, 41, 59, 0.5);
+  border-color: rgba(51, 65, 85, 0.5);
+}
+
+.dark .ar-cluster-header:hover {
+  background: rgba(30, 41, 59, 0.8);
+}
+
+.dark .ar-analytics-toggle {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(51, 65, 85, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dark .ar-mentions-banner {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.06), rgba(59, 130, 246, 0.06));
+  border-bottom-color: rgba(139, 92, 246, 0.15);
+}

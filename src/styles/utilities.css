@@ -1,0 +1,410 @@
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--vl-border) transparent;
+  }
+  html::-webkit-scrollbar {
+    width: 8px;
+  }
+  html::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  html::-webkit-scrollbar-thumb {
+    background: var(--vl-border);
+    border-radius: 4px;
+  }
+  html::-webkit-scrollbar-thumb:hover {
+    background: var(--vl-text-muted);
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image: radial-gradient(circle at 25px 25px, rgba(0,0,0,0.02) 2px, transparent 0);
+    background-size: 50px 50px;
+  }
+  .dark body {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+/* Virtual Lab theme-aware utility overrides */
+@layer components {
+  .vl-card {
+    background: var(--vl-bg-card);
+    border-color: var(--vl-border);
+  }
+  .vl-inner {
+    background: var(--vl-bg-inner);
+    border-color: var(--vl-border-subtle);
+  }
+  .vl-dialog {
+    background: var(--vl-bg-secondary);
+    border-color: var(--vl-border);
+  }
+  .vl-input {
+    background: var(--vl-bg-input);
+    border-color: var(--vl-border);
+    color: var(--vl-text-white);
+  }
+  .vl-input::placeholder {
+    color: var(--vl-text-muted);
+  }
+  /* Text color utilities that respond to theme */
+  .vl-text-heading {
+    color: var(--vl-text-heading);
+  }
+  .vl-text-body {
+    color: var(--vl-text-body);
+  }
+  .vl-text-muted {
+    color: var(--vl-text-muted);
+  }
+  .vl-text-label {
+    color: var(--vl-text-secondary);
+  }
+  /* Prose content that works in both modes */
+  .vl-prose {
+    color: var(--vl-text-secondary);
+  }
+  .vl-prose h1, .vl-prose h2, .vl-prose h3, .vl-prose h4,
+  .vl-prose h5, .vl-prose h6 {
+    color: var(--vl-text-heading);
+  }
+  .vl-prose strong {
+    color: var(--vl-text-primary);
+  }
+  .vl-prose a {
+    color: var(--vl-accent);
+  }
+  .vl-prose code {
+    color: var(--vl-accent);
+  }
+  .vl-prose blockquote {
+    color: var(--vl-text-muted);
+    border-left-color: var(--vl-border);
+  }
+}
+
+/* Visual Polish: Focus-visible, hover effects, and transitions */
+@layer utilities {
+  /* Focus-visible styles for keyboard accessibility */
+  .focus-ring {
+    &:focus-visible {
+      outline: 2px solid var(--vl-accent);
+      outline-offset: 2px;
+    }
+  }
+  /* Interactive card hover effects */
+  .interactive-card {
+    transition: all 0.2s ease;
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+  /* Quick Action buttons - theme-aware hover */
+  .vl-quick-action {
+    transition: all 0.3s ease;
+    &:hover {
+      border-color: var(--vl-border-accent);
+      background: var(--vl-bg-inner);
+    }
+  }
+  /* Skip-to-content link for accessibility */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 9999;
+    background: var(--vl-accent);
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    transition: left 0.2s ease, padding 0.2s ease, background-color 0.2s ease;
+    &:focus-visible {
+      left: 0;
+      padding: 1rem 1.5rem;
+      background: #059669;
+    }
+    &:focus:not(:focus-visible) {
+      left: -9999px;
+    }
+  }
+}
+
+/* Enhanced focus-visible for all interactive elements */
+*:focus-visible {
+  outline: 2px solid var(--vl-accent, #10b981);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* Remove default focus for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Button focus-visible styles */
+button:focus-visible,
+[role="button"]:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--vl-accent);
+  outline-offset: 2px;
+}
+
+/* Interactive card hover */
+[data-interactive-card]:hover {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.08);
+  border-color: var(--vl-border-accent);
+}
+
+/* Section separators */
+.vl-section-separator {
+  border-top: 1px solid var(--vl-border-subtle);
+  margin: 0.75rem 0;
+}
+
+/* Button press micro-interaction */
+button:active:not(:disabled) {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+
+/* Enhanced vl-card hover effects */
+.vl-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.vl-card:hover {
+  transform: scale(1.01);
+  box-shadow: var(--vl-shadow-glow);
+  border-color: var(--vl-border-accent);
+}
+
+/* Skeleton pulse animation */
+@keyframes vl-skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+.vl-skeleton-pulse {
+  animation: vl-skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* Empty state floating animation */
+@keyframes vl-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.vl-float-animation {
+  animation: vl-float 3s ease-in-out infinite;
+}
+
+/* Scroll to top button */
+.vl-scroll-top {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.vl-scroll-top:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* ============================================================
+   Additional Responsive Utility Classes
+   ============================================================ */
+
+/* 1. .text-gradient — Animated gradient applied to text via background-clip */
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--vl-accent, #10b981) 0%,
+    #06b6d4 25%,
+    #8b5cf6 50%,
+    #f59e0b 75%,
+    var(--vl-accent, #10b981) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* 2. .scroll-fade — Fade effect at top and bottom of scrollable containers */
+.scroll-fade {
+  position: relative;
+  --scroll-fade-color: var(--vl-bg-card, #ffffff);
+}
+.scroll-fade::before,
+.scroll-fade::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 36px;
+  pointer-events: none;
+  z-index: 2;
+}
+.scroll-fade::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--scroll-fade-color), transparent);
+  border-radius: inherit;
+}
+.scroll-fade::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--scroll-fade-color), transparent);
+  border-radius: inherit;
+}
+
+/* 3. .card-spotlight-enhanced — Enhanced mouse-following spotlight (CSS custom properties)
+   Note: .card-spotlight already exists (line 1023); this is an enhanced version with more CSS vars */
+.card-spotlight-enhanced {
+  position: relative;
+  overflow: hidden;
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  --spotlight-color: rgba(16, 185, 129, 0.1);
+  --spotlight-size: 350px;
+}
+.card-spotlight-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    var(--spotlight-size) circle at var(--spotlight-x) var(--spotlight-y),
+    var(--spotlight-color),
+    transparent 60%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+.card-spotlight-enhanced:hover::before {
+  opacity: 1;
+}
+.card-spotlight-enhanced > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   Typography Utility Classes
+   ============================================================ */
+
+.vl-heading-1 {
+  font-size: var(--vl-text-4xl);
+  line-height: var(--vl-text-4xl-lh);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--vl-text-heading);
+}
+
+.vl-heading-2 {
+  font-size: var(--vl-text-3xl);
+  line-height: var(--vl-text-3xl-lh);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--vl-text-heading);
+}
+
+.vl-heading-3 {
+  font-size: var(--vl-text-2xl);
+  line-height: var(--vl-text-2xl-lh);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--vl-text-heading);
+}
+
+.vl-heading-4 {
+  font-size: var(--vl-text-xl);
+  line-height: var(--vl-text-xl-lh);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--vl-text-heading);
+}
+
+.vl-body-sm {
+  font-size: var(--vl-text-sm);
+  line-height: var(--vl-text-sm-lh);
+  font-weight: 400;
+  color: var(--vl-text-body);
+}
+
+.vl-body-base {
+  font-size: var(--vl-text-base);
+  line-height: var(--vl-text-base-lh);
+  font-weight: 400;
+  color: var(--vl-text-body);
+}
+
+.vl-body-lg {
+  font-size: var(--vl-text-lg);
+  line-height: var(--vl-text-lg-lh);
+  font-weight: 400;
+  color: var(--vl-text-body);
+}
+
+.vl-caption {
+  font-size: 10px;
+  line-height: 1.25;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--vl-text-muted);
+}
+
+.vl-label {
+  font-size: var(--vl-text-sm);
+  line-height: var(--vl-text-sm-lh);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--vl-text-secondary);
+}
+
+.vl-mono {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  font-size: var(--vl-text-sm);
+  line-height: var(--vl-text-sm-lh);
+}
+
+.vl-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vl-truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vl-text-balance {
+  text-wrap: balance;
+}
+
+.vl-letter-tight {
+  letter-spacing: -0.025em;
+}
+
+.vl-letter-normal {
+  letter-spacing: 0;
+}
+
+.vl-letter-wide {
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   Design Token prefers-reduced-motion overrides
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .vl-text-balance {
+    text-wrap: wrap;
+  }
+}

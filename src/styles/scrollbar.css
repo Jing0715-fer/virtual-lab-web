@@ -1,0 +1,75 @@
+/* ============================================================
+   Enhanced Scrollbar Styles
+   ============================================================ */
+
+/* ── .custom-scrollbar-thin — 4px thin scrollbar with rounded track ── */
+.custom-scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--vl-border, rgba(100,116,139,0.3)) transparent;
+}
+.custom-scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+.custom-scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--vl-border, rgba(100,116,139,0.3));
+  border-radius: 4px;
+}
+.custom-scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--vl-text-muted, rgba(148,163,184,0.5));
+}
+
+/* ── .custom-scrollbar-dark — Dark themed scrollbar matching --vl-bg-secondary ── */
+.custom-scrollbar-dark {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.4) rgba(15, 23, 42, 0.8);
+}
+.custom-scrollbar-dark::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar-dark::-webkit-scrollbar-track {
+  background: var(--vl-bg-secondary, rgba(15, 23, 42, 0.8));
+  border-radius: 3px;
+}
+.custom-scrollbar-dark::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.4);
+  border-radius: 3px;
+}
+.custom-scrollbar-dark::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+.custom-scrollbar-dark::-webkit-scrollbar-corner {
+  background: var(--vl-bg-secondary, rgba(15, 23, 42, 0.8));
+}
+
+/* ===== 1. Themed Scrollbars ===== */
+/* Main content scrollbar — global thin scrollbar for all elements */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--vl-border) transparent;
+}
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--vl-border);
+  border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--vl-text-muted);
+}
+
+/* Horizontal scrollbar — thinner for horizontal scroll containers */
+.overflow-x-auto::-webkit-scrollbar { height: 4px; }
+.overflow-x-auto::-webkit-scrollbar-thumb { border-radius: 2px; }
+
+/* Code block scrollbars — more visible thumb for code/prose blocks */
+pre::-webkit-scrollbar-thumb, .prose::-webkit-scrollbar-thumb { background: var(--vl-text-muted); }
+
+/* Scrollbar on hover only — for clean look when not scrolling */
+.scrollbar-hover-only { scrollbar-color: transparent transparent; }
+.scrollbar-hover-only:hover { scrollbar-color: var(--vl-border) transparent; }

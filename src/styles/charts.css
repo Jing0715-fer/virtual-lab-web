@@ -1,0 +1,821 @@
+/* ============================================================
+   Radar Chart Enhancement Animations
+   ============================================================ */
+
+@keyframes radar-entrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  60% {
+    opacity: 0.7;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.radar-animate-in {
+  animation: radar-entrance 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  transform-origin: center center;
+}
+
+.radar-chart-wrapper .radar-grid-lines {
+  stroke: var(--vl-chart-grid);
+  stroke-dasharray: 3 3;
+  transition: stroke 0.3s ease;
+}
+
+.radar-animate-in:hover .radar-grid-lines {
+  stroke: var(--vl-border-accent);
+}
+
+/* ============================================================
+   Sankey Flow Diagram Animations
+   ============================================================ */
+
+@keyframes sankey-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sankey-flow {
+  transition: stroke-opacity 0.2s ease, filter 0.2s ease;
+}
+
+.sankey-flow:hover {
+  stroke-opacity: 1 !important;
+  filter: brightness(1.2);
+  cursor: pointer;
+}
+
+/* ============================================================
+   Sentiment Bar Chart Animation
+   ============================================================ */
+
+@keyframes sentiment-bar-grow {
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.sentiment-bar {
+  transform: scaleY(0);
+}
+
+/* ============================================================
+   Meeting Word Cloud (Pure CSS)
+   ============================================================ */
+
+@keyframes word-cloud-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.word-cloud-word {
+  transition: transform 0.2s ease, filter 0.2s ease;
+  display: inline-block;
+}
+
+.word-cloud-word:hover {
+  transform: scale(1.25) !important;
+  filter: brightness(1.3);
+}
+
+/* ============================================================
+   Meeting Diff View & Comparison Dashboard
+   ============================================================ */
+
+/* Side-by-side diff container */
+.diff-container {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+/* Individual diff column with border */
+.diff-column {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* Green-tinted background for similar messages */
+.diff-message-similar {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Red-tinted background for different messages */
+.diff-message-different {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Dimmed/opacity reduced for unmatched messages */
+.diff-message-unmatched {
+  opacity: 0.4;
+  filter: grayscale(0.5);
+}
+
+/* Bold colored text for word differences in summary */
+.diff-summary-highlight {
+  font-weight: 700;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+.diff-summary-highlight.added {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+}
+.diff-summary-highlight.removed {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* Tag pill for extracted keywords */
+.diff-keyword-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border: 1px solid;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.diff-keyword-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.diff-keyword-pill.common {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+}
+.diff-keyword-pill.unique-a {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+.diff-keyword-pill.unique-b {
+  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+}
+
+/* Stat comparison card with delta indicator */
+.comparison-stat-card {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: 0.75rem;
+  padding: 0.875rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.comparison-stat-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--vl-border-accent);
+}
+
+/* Delta badge (green up, red down) */
+.comparison-stat-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.125rem 0.375rem;
+  border-radius: 9999px;
+}
+.comparison-stat-delta.up {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+.comparison-stat-delta.down {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+.comparison-stat-delta.neutral {
+  background: rgba(100, 116, 139, 0.15);
+  color: #6b7280;
+}
+
+/* Word cloud container with varying font sizes */
+.comparison-word-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  min-height: 120px;
+}
+
+/* SVG gauge for sentiment score */
+.comparison-sentiment-gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* Chart container for comparison charts */
+.comparison-chart-overlay {
+  position: relative;
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: var(--vl-bg-card);
+  overflow: hidden;
+}
+
+/* Animations */
+@keyframes diff-highlight-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes comparison-stat-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes word-cloud-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ============================================================
+   Task 56-A: Meeting Insights Panel — CSS Classes & Animations
+   ============================================================ */
+
+/* Glass card with backdrop blur for insight sections */
+.insights-card {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: 12px;
+  padding: 1rem;
+  backdrop-filter: blur(12px) saturate(1.2);
+  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 0.25s ease,
+              border-color 0.25s ease;
+}
+.insights-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-color: var(--vl-border-accent);
+}
+.dark .insights-card {
+  background: rgba(30, 41, 59, 0.4);
+}
+
+/* Word cloud container */
+.word-cloud-container {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 10px;
+  padding: 1rem;
+  min-height: 140px;
+  max-height: 220px;
+  overflow: hidden;
+}
+
+/* Word cloud individual word */
+.word-cloud-word {
+  display: inline-block;
+  cursor: default;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  line-height: 1.3;
+  font-weight: 600;
+}
+.word-cloud-word:hover {
+  transform: scale(1.18);
+  opacity: 0.85;
+}
+
+/* Sentiment colors */
+.sentiment-positive {
+  color: #10b981;
+  stroke: #10b981;
+}
+.sentiment-neutral {
+  color: #f59e0b;
+  stroke: #f59e0b;
+}
+.sentiment-negative {
+  color: #ef4444;
+  stroke: #ef4444;
+}
+
+/* Key phrase pill badge */
+.key-phrase-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+  color: var(--vl-text-secondary);
+  transition: all 0.2s ease;
+  cursor: default;
+}
+.key-phrase-badge:hover {
+  border-color: var(--vl-border-accent);
+  background: var(--vl-accent-bg);
+  transform: translateY(-1px);
+}
+.key-phrase-badge .phrase-count {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--vl-accent);
+  background: var(--vl-accent-bg);
+  padding: 1px 6px;
+  border-radius: 9999px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Insight metric row styling */
+.insights-metric {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--vl-border-subtle);
+}
+.insights-metric:last-child {
+  border-bottom: none;
+}
+.insights-metric-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--vl-accent-bg);
+  color: var(--vl-accent);
+}
+.insights-metric-content {
+  flex: 1;
+  min-width: 0;
+}
+.insights-metric-label {
+  font-size: 0.7rem;
+  color: var(--vl-text-muted);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.insights-metric-value {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--vl-text-heading);
+}
+.insights-metric-desc {
+  font-size: 0.65rem;
+  color: var(--vl-text-muted);
+  margin-top: 1px;
+}
+
+/* Insight stat card for the overview grid */
+.insights-stat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid var(--vl-border-subtle);
+  background: linear-gradient(135deg, var(--vl-bg-card), var(--vl-bg-inner));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.insights-stat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(16, 185, 129, 0.04) 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.insights-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.08);
+}
+.insights-stat-card:hover::after {
+  opacity: 1;
+}
+.insights-stat-icon {
+  color: var(--vl-accent);
+  margin-bottom: 6px;
+}
+.insights-stat-number {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--vl-text-heading);
+  line-height: 1.1;
+}
+.insights-stat-label {
+  font-size: 0.65rem;
+  color: var(--vl-text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Insights fade-in animation */
+@keyframes insights-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Word cloud float animation */
+@keyframes word-cloud-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Metric count-up animation */
+@keyframes metric-count-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Chart grow-in animation */
+@keyframes chart-grow-in {
+  from { opacity: 0; transform: scaleY(0.6); transform-origin: bottom; }
+  to { opacity: 1; transform: scaleY(1); transform-origin: bottom; }
+}
+
+/* Phrase highlight animation */
+@keyframes phrase-highlight {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(16, 185, 129, 0.15); }
+  100% { background-color: transparent; }
+}
+
+/* prefers-reduced-motion for insights */
+@media (prefers-reduced-motion: reduce) {
+  .insights-card { transition: none; }
+  .insights-card:hover { transform: none; }
+  .insights-stat-card { transition: none; }
+  .insights-stat-card:hover { transform: none; }
+  .word-cloud-word { transition: none; }
+  .word-cloud-word:hover { transform: none; }
+  .key-phrase-badge { transition: none; }
+  .key-phrase-badge:hover { transform: none; }
+}
+
+/* ============================================================
+   Enhanced Replay Scrubber Styling
+   ============================================================ */
+.enhanced-replay-scrubber::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #10b981;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  transition: transform 0.15s ease;
+}
+.enhanced-replay-scrubber::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+.enhanced-replay-scrubber::-webkit-slider-thumb:active {
+  transform: scale(1.3);
+  background: #059669;
+}
+.enhanced-replay-scrubber::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #10b981;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+/* Word Cloud hover animation */
+.meeting-word-cloud span {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.meeting-word-cloud span:hover {
+  transform: scale(1.1);
+}
+
+/* ============================================================
+   Meeting Insights Analytics Engine — CSS Styles
+   ============================================================ */
+
+/* 1. Radar Chart Styles */
+.radar-chart {
+  position: relative;
+  overflow: visible;
+}
+.radar-chart svg {
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.08));
+}
+.radar-axis {
+  stroke: var(--vl-border-subtle);
+  transition: opacity 0.5s ease;
+}
+.radar-polygon {
+  transition: fill-opacity 0.8s ease, stroke-opacity 0.8s ease;
+}
+
+/* 2. Word Cloud Styles */
+.word-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 0.6rem;
+  padding: 1rem 0.5rem;
+  min-height: 120px;
+}
+.word-cloud-item {
+  display: inline-block;
+  cursor: default;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  line-height: 1.2;
+  user-select: none;
+}
+.word-cloud-item:hover {
+  transform: scale(1.18) !important;
+  opacity: 1 !important;
+  text-shadow: 0 0 8px currentColor;
+}
+
+/* 3. Collaboration Heatmap Styles */
+.collab-heatmap {
+  display: inline-grid;
+  gap: 3px;
+}
+.heatmap-cell {
+  transition: transform 0.15s ease, background-color 0.3s ease;
+  cursor: default;
+}
+.heatmap-cell:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+  z-index: 1;
+  position: relative;
+}
+
+/* 4. Insight Card Styles */
+.insight-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.insight-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.08);
+  border-color: var(--vl-border-accent);
+}
+
+/* 5. Agent Performance Card */
+.agent-perf-card {
+  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 0.25s ease,
+              border-color 0.25s ease;
+}
+.agent-perf-card:hover {
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.1),
+              0 0 0 1px var(--vl-border-accent);
+}
+
+/* 6. Chart Entrance Animations */
+@keyframes insights-fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes chart-grow-in {
+  from { opacity: 0; transform: scaleY(0.85); transform-origin: bottom; }
+  to { opacity: 1; transform: scaleY(1); transform-origin: bottom; }
+}
+
+@keyframes radar-spin-in {
+  from { opacity: 0; transform: rotate(-45deg) scale(0.9); }
+  to { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+
+@keyframes heatmap-cell-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes word-cloud-float {
+  0%, 100% { transform: translateY(0) rotate(var(--word-rotation, 0deg)); }
+  50% { transform: translateY(-3px) rotate(var(--word-rotation, 0deg)); }
+}
+
+@keyframes insight-slide-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes metric-count-up {
+  0% { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 7. Meeting Insights Panel Section Card (from existing meeting-insights-panel.tsx) */
+.insights-card {
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: 12px;
+  padding: 1rem;
+}
+.insights-card:hover {
+  border-color: var(--vl-border-accent);
+}
+
+.insights-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.75rem;
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: 10px;
+  gap: 0.25rem;
+}
+.insights-stat-icon {
+  color: var(--vl-accent);
+  margin-bottom: 0.25rem;
+}
+.insights-stat-number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--vl-text-white);
+}
+.insights-stat-label {
+  font-size: 0.625rem;
+  color: var(--vl-text-muted);
+}
+
+.insights-metric {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+.insights-metric-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+.insights-metric-content {
+  flex: 1;
+  min-width: 0;
+}
+.insights-metric-label {
+  font-size: 0.625rem;
+  color: var(--vl-text-muted);
+  margin-bottom: 0.125rem;
+}
+.insights-metric-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vl-text-white);
+}
+.insights-metric-desc {
+  font-size: 0.5625rem;
+  color: var(--vl-text-muted);
+  margin-top: 0.125rem;
+}
+
+.word-cloud-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+  padding: 1rem 0.5rem;
+  min-height: 140px;
+}
+.word-cloud-word {
+  display: inline-block;
+  cursor: default;
+  user-select: none;
+}
+
+.key-phrase-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--vl-text-body);
+  border: 1px solid var(--vl-border-subtle);
+}
+.phrase-count {
+  font-size: 0.5625rem;
+  color: var(--vl-text-muted);
+  background: var(--vl-bg-inner);
+  padding: 0.0625rem 0.3125rem;
+  border-radius: 9999px;
+}
+
+/* ============================================================
+   Advanced Data Visualization Pack — Sankey, Force Graph, Treemap
+   ============================================================ */
+
+/* Force graph canvas smooth rendering */
+.force-graph-canvas {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  border-radius: 0.5rem;
+}
+
+/* Treemap cell hover animation */
+.treemap-cell {
+  transition: filter 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+  cursor: pointer;
+}
+.treemap-cell:hover {
+  filter: brightness(1.2);
+  z-index: 1;
+  position: relative;
+}
+
+/* Visualization gallery card grid */
+.viz-gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .viz-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Force graph glow effect on node hover */
+@keyframes force-glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* Treemap breadcrumb animation */
+@keyframes treemap-breadcrumb-enter {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* prefers-reduced-motion for new visualizations */
+@media (prefers-reduced-motion: reduce) {
+  .treemap-cell { transition: none; }
+  .treemap-cell:hover { filter: none; }
+  .force-graph-canvas { image-rendering: auto; }
+}

@@ -1,0 +1,570 @@
+/* ============================================================
+   Team Activity Feed & Social Features CSS
+   ============================================================ */
+
+/* --- Timeline Styles --- */
+.activity-timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.activity-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.875rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--vl-accent) 0%,
+    var(--vl-border) 40%,
+    transparent 100%
+  );
+  border-radius: 1px;
+}
+
+.activity-timeline-item {
+  position: relative;
+  padding-left: 1.5rem;
+  padding-bottom: 0.25rem;
+}
+
+.activity-timeline-dot {
+  position: absolute;
+  left: -1.625rem;
+  top: 0.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  border: 2px solid var(--vl-border);
+  background: var(--vl-bg-card);
+  box-shadow: 0 0 0 3px var(--vl-bg-card);
+}
+
+.activity-timeline-dot.active {
+  border-color: var(--vl-accent);
+  box-shadow: 0 0 0 3px var(--vl-bg-card), 0 0 8px var(--vl-accent-bg);
+}
+
+/* --- Activity Card Animations --- */
+.activity-card-enter {
+  animation: activitySlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes activitySlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.activity-card-stagger {
+  animation: activitySlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+}
+
+/* --- Activity Density Sparkline --- */
+.activity-sparkline {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.activity-sparkline-area {
+  opacity: 0.15;
+}
+
+/* --- Group Headers --- */
+.activity-group-header {
+  position: relative;
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: var(--vl-text-muted);
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+}
+
+/* --- Reaction Pill Styles --- */
+.reaction-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.reaction-pill:hover {
+  background: var(--vl-bg-card-hover);
+  border-color: var(--vl-border);
+  transform: scale(1.05);
+}
+
+.reaction-pill.reacted {
+  background: var(--vl-accent-bg);
+  border-color: var(--vl-border-accent);
+  box-shadow: 0 0 8px var(--vl-accent-bg);
+}
+
+.reaction-pill .reaction-count {
+  font-size: 0.6875rem;
+  color: var(--vl-text-muted);
+  min-width: 0.625rem;
+  text-align: center;
+}
+
+/* Reaction pop animation */
+@keyframes reactionPop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.reaction-pop-anim {
+  animation: reactionPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Floating reaction animation */
+@keyframes reactionFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(1.5);
+  }
+}
+
+.reaction-float {
+  position: absolute;
+  pointer-events: none;
+  animation: reactionFloat 0.8s ease-out forwards;
+}
+
+/* --- Reaction Picker Grid --- */
+.reaction-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
+  padding: 0.375rem;
+}
+
+.reaction-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 1.125rem;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.reaction-picker-item:hover {
+  background: var(--vl-bg-card-hover);
+  border-color: var(--vl-border-subtle);
+  transform: scale(1.15);
+}
+
+.reaction-picker-item:active {
+  transform: scale(0.95);
+}
+
+/* --- Avatar Stack for Reactions --- */
+.avatar-stack {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-stack-item {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--vl-bg-card);
+  margin-left: -0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: white;
+  overflow: hidden;
+}
+
+.avatar-stack-item:first-child {
+  margin-left: 0;
+}
+
+.avatar-stack-more {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--vl-bg-card);
+  margin-left: -0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  color: var(--vl-text-muted);
+  background: var(--vl-bg-inner);
+}
+
+/* --- Most Reacted Highlight --- */
+.most-reacted-highlight {
+  position: relative;
+  border-left: 3px solid #f59e0b;
+  padding-left: 0.75rem;
+}
+
+.most-reacted-highlight::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #f59e0b, #f97316);
+  border-radius: 2px;
+  animation: highlightPulse 2s ease-in-out infinite;
+}
+
+@keyframes highlightPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* --- Status Indicator Pulse Animations --- */
+@keyframes statusPulseOnline {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes statusPulseBusy {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0);
+  }
+}
+
+@keyframes statusPulseInMeeting {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(6, 182, 212, 0);
+  }
+}
+
+.status-dot-online {
+  background: #10b981;
+  animation: statusPulseOnline 2s ease-in-out infinite;
+}
+
+.status-dot-busy {
+  background: #f59e0b;
+  animation: statusPulseBusy 2s ease-in-out infinite;
+}
+
+.status-dot-offline {
+  background: #6b7280;
+  opacity: 0.5;
+}
+
+.status-dot-in-meeting {
+  background: #06b6d4;
+  animation: statusPulseInMeeting 1.5s ease-in-out infinite;
+}
+
+.status-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.status-dot-lg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+/* --- Status History Item --- */
+.status-history-item {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.status-history-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: var(--vl-text-muted);
+}
+
+/* --- Mention Highlight --- */
+.mention-highlight {
+  background: rgba(6, 182, 212, 0.15);
+  color: #06b6d4;
+  border-radius: 0.25rem;
+  padding: 0 0.25rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.mention-highlight:hover {
+  background: rgba(6, 182, 212, 0.25);
+  text-decoration: underline;
+}
+
+/* --- Mention Autocomplete --- */
+.mention-autocomplete {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  max-height: 12rem;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+  border: 1px solid var(--vl-border);
+  background: var(--vl-bg-card);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  padding: 0.25rem;
+}
+
+.mention-autocomplete-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.mention-autocomplete-item:hover,
+.mention-autocomplete-item.active {
+  background: var(--vl-bg-card-hover);
+}
+
+/* --- Notification Badge --- */
+.notification-badge {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.25rem;
+  border-radius: 9999px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: 2px solid var(--vl-bg-card);
+}
+
+@keyframes notificationBadgePop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.notification-badge.new {
+  animation: notificationBadgePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* --- Mention Notification Item --- */
+.mention-notification-item {
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: background 0.15s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.mention-notification-item:hover {
+  background: var(--vl-bg-inner);
+}
+
+.mention-notification-item.unread {
+  background: rgba(6, 182, 212, 0.05);
+  border-color: rgba(6, 182, 212, 0.15);
+}
+
+/* --- Team Status Card Glassmorphism --- */
+.team-status-card {
+  backdrop-filter: blur(12px);
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.team-status-card:hover {
+  border-color: var(--vl-border-accent);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
+}
+
+/* --- Responsive Grid Layouts --- */
+.activity-feed-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .activity-feed-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .activity-feed-grid {
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.social-panel-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .social-panel-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* --- Quick Action Buttons --- */
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+  color: var(--vl-text-body);
+}
+
+.quick-action-btn:hover {
+  background: var(--vl-accent-bg);
+  border-color: var(--vl-border-accent);
+  color: #10b981;
+  transform: translateY(-1px);
+}
+
+/* --- Activity Empty State --- */
+.activity-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+/* --- Fade Animation for Idle Agents --- */
+@keyframes statusFadeIdle {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.status-fade-idle {
+  animation: statusFadeIdle 3s ease-in-out infinite;
+}
+
+/* --- Scrollable Filter Area --- */
+.activity-filters-scroll {
+  max-height: 9rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Custom scrollbar for the activity feed area */
+.activity-scroll-area {
+  max-height: 24rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Glass panel for reaction bar */
+.reaction-bar-glass {
+  backdrop-filter: blur(8px);
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: 9999px;
+  padding: 0.25rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Sparkline gradient fill */
+.sparkline-gradient-stop {
+  transition: all 0.3s ease;
+}

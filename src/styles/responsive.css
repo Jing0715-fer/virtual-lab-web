@@ -1,0 +1,472 @@
+/* ============================================================
+   Round 13: Polish & Mobile Optimization - New Animations
+   ============================================================ */
+
+/* 1. Fade-in + slide up animation (for content appearing) */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-in-up {
+  animation: fade-in-up 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* 2. Scale-in animation (for modals/dialogs) */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.scale-in {
+  animation: scale-in 0.25s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* 3. Slide-in from right (for notification panels) */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.slide-in-right {
+  animation: slide-in-right 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* 4. Slow gradient color shift for card borders */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 50% 100%; }
+  50% { background-position: 100% 50%; }
+  75% { background-position: 50% 0%; }
+  100% { background-position: 0% 50%; }
+}
+.gradient-shift {
+  background: linear-gradient(135deg, #10b981, #06b6d4, #8b5cf6, #f59e0b, #ef4444, #10b981);
+  background-size: 400% 400%;
+  animation: gradient-shift 8s ease infinite;
+  padding: 1px;
+  border-radius: inherit;
+}
+
+/* Enhanced skeleton shimmer with gradient animation for loading states */
+@keyframes skeleton-gradient-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-shimmer-enhanced {
+  background: linear-gradient(
+    90deg,
+    var(--vl-bg-card) 0%,
+    var(--vl-bg-secondary) 20%,
+    rgba(16, 185, 129, 0.06) 50%,
+    var(--vl-bg-secondary) 80%,
+    var(--vl-bg-card) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-gradient-shimmer 2s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+/* ============================================================
+   Round 16: Responsive Breakpoint Utility Classes
+   ============================================================ */
+
+.container-narrow {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.container-wide {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (min-width: 640px) {
+  .container-narrow,
+  .container-wide {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.hide-mobile {
+  display: block;
+}
+.hide-desktop {
+  display: none;
+}
+@media (min-width: 768px) {
+  .hide-mobile {
+    display: none;
+  }
+  .hide-desktop {
+    display: block;
+  }
+}
+
+.text-mobile-sm {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+@media (min-width: 768px) {
+  .text-mobile-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+.gap-mobile {
+  gap: 0.5rem;
+}
+@media (min-width: 768px) {
+  .gap-mobile {
+    gap: 1rem;
+  }
+}
+
+/* WCAG AA contrast fix for vl-text-muted */
+.dark .vl-text-muted {
+  color: #94a3b8;
+}
+
+/* ============================================================
+   Print Stylesheet — Clean Meeting Report Printing
+   ============================================================ */
+
+@media print {
+
+  /* --- General Print Setup --- */
+
+  /* Hide non-printable UI chrome */
+  header,
+  footer,
+  [data-mobile-nav],
+  [data-fab],
+  [data-command-palette],
+  [data-onboarding-tour],
+  [data-notification-panel],
+  .vl-scroll-top,
+  .skip-link,
+  nav,
+  [role="navigation"],
+  button:not([data-print-keep]),
+  [data-interactive-card] button,
+  .glass-layer-1,
+  .glass-layer-2,
+  .glass-layer-3 {
+    display: none !important;
+  }
+
+  /* Force white background and black text */
+  html,
+  body,
+  main,
+  section,
+  article,
+  div,
+  span,
+  p,
+  h1, h2, h3, h4, h5, h6,
+  li,
+  td,
+  th,
+  blockquote {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Serif body text for print readability */
+  body {
+    font-family: "Georgia", "Times New Roman", serif !important;
+    font-size: 12pt !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Page margins: 2cm all sides */
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+
+  /* Page numbering via CSS counter */
+  @page :first {
+    margin-top: 2cm;
+  }
+
+  /* Remove all shadows, gradients, and glassmorphism */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Remove background images/gradients */
+  body {
+    background-image: none !important;
+    background-size: auto !important;
+  }
+
+  /* Remove all animations and transitions */
+  *, *::before, *::after {
+    animation: none !important;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
+    transition-duration: 0ms !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Ensure links show URL for print */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555 !important;
+  }
+  a[href^="#"]::after,
+  a[href^="javascript"]::after {
+    content: none;
+  }
+
+  /* Page breaks */
+  .vl-card,
+  section,
+  article {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  table, figure, img {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* --- Card Styling for Print --- */
+
+  .vl-card,
+  [data-interactive-card],
+  .glass-card,
+  .bio-tool-card,
+  .card-3d-hover,
+  .card-glass-hover,
+  .card-spotlight,
+  .card-spotlight-enhanced {
+    border: 1px solid #ccc !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    padding: 12pt 14pt !important;
+    margin-bottom: 8pt !important;
+  }
+
+  /* Remove card hover effects */
+  .vl-card:hover,
+  [data-interactive-card]:hover,
+  .glass-card:hover,
+  .bio-tool-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: #ccc !important;
+  }
+
+  /* Remove glassmorphism pseudo-elements */
+  .spotlight-card::before,
+  .spotlight-cursor::before,
+  .card-spotlight::before,
+  .card-spotlight-enhanced::before,
+  .gradient-border::before,
+  .bio-tool-card::before,
+  .meeting-card-glow::after,
+  .ripple::after {
+    display: none !important;
+  }
+
+  /* --- Table Styling for Print --- */
+
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    font-size: 10pt !important;
+  }
+
+  th, td {
+    border: 1px solid #999 !important;
+    padding: 6pt 8pt !important;
+    text-align: left !important;
+  }
+
+  thead th {
+    background: #f0f0f0 !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid #333 !important;
+  }
+
+  /* Alternating row backgrounds */
+  tbody tr:nth-child(even) {
+    background: #f7f7f7 !important;
+  }
+  tbody tr:nth-child(odd) {
+    background: #ffffff !important;
+  }
+
+  /* Remove hover effects on table rows */
+  tr:hover {
+    background: inherit !important;
+  }
+
+  /* --- Chart / SVG Print --- */
+
+  /* Recharts SVG renders well natively */
+  svg {
+    max-width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Hide interactive chart elements */
+  .recharts-tooltip-wrapper,
+  .recharts-brush,
+  .recharts-legend-wrapper button,
+  [data-chart-interactive],
+  [role="slider"],
+  [role="button"] {
+    display: none !important;
+  }
+
+  /* --- Hide Interactive Elements --- */
+
+  input,
+  textarea,
+  select {
+    border: 1px solid #999 !important;
+    background: #ffffff !important;
+  }
+
+  /* Hide dropdown menus, popovers, tooltips */
+  [data-popover],
+  [role="dialog"],
+  [role="tooltip"],
+  [role="menu"],
+  [role="listbox"],
+  .dialog-overlay-blur {
+    display: none !important;
+  }
+
+  /* --- Print-specific Utilities --- */
+
+  /* Show page numbers */
+  main {
+    counter-reset: page-counter;
+  }
+
+  /* Print header/footer via fixed positioning */
+  .print-header,
+  .print-footer {
+    display: block !important;
+    position: fixed;
+    left: 0;
+    right: 0;
+    font-size: 9pt;
+    color: #666;
+  }
+  .print-header {
+    top: 0;
+  }
+  .print-footer {
+    bottom: 0;
+  }
+
+  /* Ensure content doesn't overlap fixed headers/footers */
+  @page {
+    @top-center {
+      content: "Virtual Lab — Meeting Report";
+    }
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages);
+    }
+  }
+
+  /* Ensure overflow content is visible */
+  .overflow-x-auto,
+  .overflow-y-auto,
+  .overflow-auto {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  /* Print-friendly code blocks */
+  pre, code {
+    font-family: "Courier New", Courier, monospace !important;
+    font-size: 9pt !important;
+    border: 1px solid #ddd !important;
+    background: #f8f8f8 !important;
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+  }
+  pre {
+    padding: 8pt !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Print-friendly blockquotes */
+  blockquote {
+    border-left: 3px solid #ccc !important;
+    padding-left: 12pt !important;
+    margin: 8pt 0 !important;
+    font-style: italic !important;
+  }
+
+  /* Print-friendly images */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid !important;
+    border: none !important;
+  }
+
+  /* Separator lines */
+  hr {
+    border-top: 1px solid #ccc !important;
+    margin: 12pt 0 !important;
+  }
+
+  /* Hide custom scrollbar entirely */
+  .custom-scrollbar::-webkit-scrollbar,
+  html::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Badge styles for print */
+  .status-pulse,
+  .breathing-glow,
+  .pulse-glow,
+  .counter-glow,
+  .badge-pulse,
+  .badge-bounce {
+    animation: none !important;
+  }
+}

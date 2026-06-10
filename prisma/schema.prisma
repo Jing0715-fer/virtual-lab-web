@@ -1,0 +1,175 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Agent {
+  id        String   @id @default(cuid())
+  title     String
+  expertise String
+  goal      String
+  role      String
+  model     String   @default("gpt-4o")
+  color     String   @default("#6366f1")
+  icon      String   @default("bot")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  teamLeadMeetings  TeamMeeting[]   @relation("TeamLead")
+  teamMemberMeetings TeamMeeting[]  @relation("TeamMembers")
+  individualMeetings IndividualMeeting[] @relation("TeamMember")
+  assignedPipelineTasks PipelineTask[] @relation("TaskAssignee")
+
+  @@map("agents")
+}
+
+model TeamMeeting {
+  id              String   @id @default(cuid())
+  agenda          String
+  agendaQuestions  String   @default("[]") // JSON array
+  agendaRules      String   @default("[]") // JSON array
+  numRounds       Int      @default(3)
+  temperature     Float    @default(0.2)
+  status          String   @default("draft") // draft, running, completed
+  summary         String?
+  saveName        String   @default("discussion")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  teamLeadId String
+  teamLead   Agent  @relation("TeamLead", fields: [teamLeadId], references: [id])
+  teamMembers Agent[] @relation("TeamMembers")
+
+  // Discussion messages
+  messages DiscussionMessage[]
+
+  @@index([teamLeadId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("team_meetings")
+}
+
+model IndividualMeeting {
+  id              String   @id @default(cuid())
+  agenda          String
+  agendaQuestions  String   @default("[]") // JSON array
+  agendaRules      String   @default("[]") // JSON array
+  temperature     Float    @default(0.2)
+  status          String   @default("draft") // draft, running, completed
+  summary         String?
+  saveName        String   @default("discussion")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  teamMemberId String
+  teamMember   Agent  @relation("TeamMember", fields: [teamMemberId], references: [id])
+
+  // Discussion messages
+  messages DiscussionMessage[]
+
+  @@index([teamMemberId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("individual_meetings")
+}
+
+model DiscussionMessage {
+  id          String   @id @default(cuid())
+  agentName   String   // "User" or agent title
+  message     String
+  roundIndex  Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  teamMeetingId      String?
+  teamMeeting        TeamMeeting?      @relation(fields: [teamMeetingId], references: [id])
+  individualMeetingId String?
+  individualMeeting  IndividualMeeting? @relation(fields: [individualMeetingId], references: [id])
+
+  @@index([teamMeetingId])
+  @@index([individualMeetingId])
+  @@index([createdAt])
+  @@map("discussion_messages")
+}
+
+model MeetingSummary {
+  id          String   @id @default(cuid())
+  content     String
+  sourceType  String   // "team" or "individual"
+  sourceId    String
+  createdAt   DateTime @default(now())
+
+  @@map("meeting_summaries")
+}
+
+model Pipeline {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @default("")
+  stages      PipelineStage[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("pipelines")
+}
+
+model PipelineStage {
+  id        String   @id @default(cuid())
+  title     String
+  order     Int      @default(0)
+  color     String   @default("#10b981")
+  pipelineId String
+  pipeline  Pipeline @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+  tasks     PipelineTask[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("pipeline_stages")
+}
+
+model PipelineTask {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  status      String   @default("todo")  // todo, in_progress, done
+  priority    String   @default("medium") // low, medium, high, critical
+  order       Int      @default(0)
+  stageId     String
+  stage       PipelineStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  assigneeId  String?
+  assignee    Agent?   @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  meetingId   String?
+  dueDate     DateTime?
+  tags        String   @default("[]") // JSON array of strings
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([stageId])
+  @@index([assigneeId])
+  @@index([status])
+  @@map("pipeline_tasks")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String   // meeting_completed, meeting_started, agent_message, task_assigned, task_due
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  link      String?  // URL to navigate to when clicked
+  createdAt DateTime @default(now())
+
+  @@index([read])
+  @@index([createdAt])
+  @@map("notifications")
+}

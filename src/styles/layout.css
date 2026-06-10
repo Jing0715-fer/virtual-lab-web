@@ -1,0 +1,1399 @@
+/* ============================================================
+   Enhanced Toast Notification System
+   ============================================================ */
+
+/* Toast container — fixed bottom-right, vertical stack */
+.vl-toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+  pointer-events: none;
+  max-width: 380px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .vl-toast-container {
+    right: 0.75rem;
+    left: 0.75rem;
+    bottom: 5rem;
+    max-width: none;
+  }
+}
+
+/* Individual toast item */
+.vl-toast {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  /* Left colored border */
+  border-left-width: 4px;
+}
+
+/* Slide-in from right */
+.vl-toast-enter {
+  animation: vl-toast-slide-in 300ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* Slide-out to right */
+.vl-toast-exit {
+  animation: vl-toast-slide-out 250ms cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+@keyframes vl-toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes vl-toast-slide-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Toast type variants */
+.vl-toast-success {
+  border-left-color: #10b981;
+}
+.vl-toast-success .vl-toast-icon-wrap {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.vl-toast-error {
+  border-left-color: #ef4444;
+}
+.vl-toast-error .vl-toast-icon-wrap {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.vl-toast-warning {
+  border-left-color: #f59e0b;
+}
+.vl-toast-warning .vl-toast-icon-wrap {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.vl-toast-info {
+  border-left-color: #3b82f6;
+}
+.vl-toast-info .vl-toast-icon-wrap {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Toast icon wrapper */
+.vl-toast-icon-wrap {
+  flex-shrink: 0;
+  width: 1.625rem;
+  height: 1.625rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Toast close button */
+.vl-toast-close {
+  flex-shrink: 0;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vl-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  padding: 0;
+}
+.vl-toast-close:hover {
+  background: var(--vl-bg-card-hover);
+  color: var(--vl-text-heading);
+}
+
+/* Toast progress bar at bottom */
+.vl-toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 0 0 0 10px;
+}
+
+.vl-toast-progress-bar {
+  height: 100%;
+  border-radius: 0 0 0 10px;
+  transition: width linear;
+}
+
+.vl-toast-success .vl-toast-progress-bar {
+  background: #10b981;
+}
+.vl-toast-error .vl-toast-progress-bar {
+  background: #ef4444;
+}
+.vl-toast-warning .vl-toast-progress-bar {
+  background: #f59e0b;
+}
+.vl-toast-info .vl-toast-progress-bar {
+  background: #3b82f6;
+}
+
+/* ========== A. Floating Particle System CSS ========== */
+
+/* Particle field container */
+.particle-field {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+}
+
+/* Base particle style */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.4);
+  pointer-events: none;
+}
+
+/* Particle variants — different sizes, positions, animation durations */
+.particle-1 { width: 3px; height: 3px; top: 15%; left: 10%; animation: particle-float 6s ease-in-out infinite; }
+.particle-2 { width: 5px; height: 5px; top: 40%; left: 25%; animation: particle-float 8s ease-in-out infinite 1s; }
+.particle-3 { width: 2px; height: 2px; top: 70%; left: 45%; animation: particle-float 5s ease-in-out infinite 0.5s; }
+.particle-4 { width: 4px; height: 4px; top: 20%; left: 65%; animation: particle-float 7s ease-in-out infinite 2s; }
+.particle-5 { width: 6px; height: 6px; top: 55%; left: 80%; animation: particle-float 9s ease-in-out infinite 1.5s; }
+.particle-6 { width: 2px; height: 2px; top: 85%; left: 15%; animation: particle-float 6s ease-in-out infinite 3s; }
+.particle-7 { width: 3px; height: 3px; top: 10%; left: 90%; animation: particle-float 8s ease-in-out infinite 0.8s; }
+.particle-8 { width: 4px; height: 4px; top: 60%; left: 55%; animation: particle-float 7s ease-in-out infinite 2.5s; }
+
+/* Light mode particles — softer, more translucent */
+:root:not(.dark) .particle {
+  background: rgba(16, 185, 129, 0.2);
+}
+
+@keyframes particle-float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.6; }
+  25% { transform: translateY(-20px) translateX(8px); opacity: 1; }
+  50% { transform: translateY(-35px) translateX(-5px); opacity: 0.8; }
+  75% { transform: translateY(-15px) translateX(12px); opacity: 1; }
+}
+
+@keyframes particle-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(30px); }
+}
+
+/* ============================================================
+   27: View Transition Container
+   ============================================================ */
+.view-transition-container {
+  position: relative;
+  min-height: 400px;
+}
+.view-transition-slide-left {
+  animation: view-slide-from-left 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+.view-transition-slide-right {
+  animation: view-slide-from-right 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+.view-transition-slide-up {
+  animation: view-slide-from-bottom 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+@keyframes view-slide-from-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes view-slide-from-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes view-slide-from-bottom {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   27: Tab underline animation
+   ============================================================ */
+.tab-underline-container {
+  position: relative;
+}
+.tab-underline-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ============================================================
+   27: Progress Ring (SVG helper)
+   ============================================================ */
+.progress-ring-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.progress-ring-text {
+  position: absolute;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Pipeline Template Gallery System
+   ============================================================ */
+
+/* Template gallery responsive grid */
+.template-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+@media (min-width: 640px) {
+  .template-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .template-gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Template card — glassmorphism with hover */
+.template-card {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 0.25s ease,
+              border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.template-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1),
+              0 0 20px rgba(16, 185, 129, 0.06);
+  border-color: var(--vl-border-accent);
+}
+.dark .template-card {
+  background: var(--vl-bg-card);
+}
+.dark .template-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25),
+              0 0 20px rgba(16, 185, 129, 0.08);
+}
+
+/* Template stage pill — mini colored stage indicator */
+.template-stage-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: transform 0.15s ease;
+}
+.template-stage-pill:hover {
+  transform: scale(1.05);
+}
+
+/* Template category tab — styled filter tab */
+.template-category-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  color: var(--vl-text-muted);
+  background: transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.template-category-tab:hover {
+  color: var(--vl-text-heading);
+  background: var(--vl-bg-inner);
+  border-color: var(--vl-border-subtle);
+}
+.template-category-tab.active {
+  color: var(--vl-accent);
+  background: var(--vl-accent-bg);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* Template preview modal — glass effect overlay */
+.template-preview-modal {
+  background: var(--vl-bg-secondary);
+  border: 1px solid var(--vl-border);
+  border-radius: 16px;
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2),
+              0 0 40px rgba(16, 185, 129, 0.06);
+  max-width: 560px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.dark .template-preview-modal {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+              0 0 40px rgba(16, 185, 129, 0.08);
+}
+
+/* Template card entrance animation */
+@keyframes template-card-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Template save dialog textarea */
+.template-json-textarea {
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border);
+  border-radius: 8px;
+  color: var(--vl-text-heading);
+  font-family: monospace;
+  font-size: 12px;
+  resize: vertical;
+  min-height: 120px;
+  padding: 12px;
+  width: 100%;
+}
+.template-json-textarea:focus {
+  outline: 2px solid var(--vl-accent);
+  outline-offset: 1px;
+}
+.template-json-textarea::placeholder {
+  color: var(--vl-text-muted);
+}
+
+/* ============================================================
+   Spacing Layout Utility Classes
+   ============================================================ */
+
+.vl-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vl-space-4);
+}
+
+.vl-stack-sm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vl-space-2);
+}
+
+.vl-stack-lg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vl-space-6);
+}
+
+.vl-inline-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--vl-space-4);
+}
+
+.vl-cluster-sm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--vl-space-2);
+}
+
+.vl-cluster-md {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--vl-space-4);
+}
+
+.vl-cluster-lg {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--vl-space-6);
+}
+
+.vl-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vl-with-sidebar {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--vl-space-6);
+}
+
+@media (max-width: 768px) {
+  .vl-with-sidebar {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vl-aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+/* ============================================================
+   Detail Polish CSS Classes
+   ============================================================ */
+
+/* Focus-visible ring — consistent focus ring for interactive elements */
+.focus-visible-ring {
+  outline: none;
+}
+.focus-visible-ring:focus-visible {
+  outline: 2px solid var(--vl-accent);
+  outline-offset: 2px;
+  border-radius: var(--vl-radius-sm);
+}
+
+/* Custom text selection color (emerald) */
+.selection-highlight ::selection {
+  background: rgba(16, 185, 129, 0.25);
+  color: inherit;
+}
+
+/* Thin custom scrollbar styling */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--vl-border) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--vl-border);
+  border-radius: var(--vl-radius-full);
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--vl-text-muted);
+}
+
+/* Hidden scrollbar but keep scroll functionality */
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Word-break and overflow-wrap for long text */
+.text-balance-wrap {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Subtle horizontal divider line */
+.divider-subtle {
+  border: none;
+  border-top: 1px solid var(--vl-border-subtle);
+  margin: var(--vl-space-4) 0;
+}
+
+/* Subtle dot pattern background */
+.dot-pattern-bg {
+  background-image: radial-gradient(circle, var(--vl-border) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Subtle grid pattern background */
+.grid-pattern-bg {
+  background-image:
+    linear-gradient(var(--vl-border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--vl-border-subtle) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Noise texture overlay using SVG filter */
+.noise-overlay {
+  position: relative;
+}
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  border-radius: inherit;
+}
+.dark .noise-overlay::before {
+  opacity: 1;
+}
+
+/* Max-width content container with auto margins */
+.content-container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--vl-space-4);
+  padding-right: var(--vl-space-4);
+}
+
+@media (min-width: 640px) {
+  .content-container {
+    padding-left: var(--vl-space-6);
+    padding-right: var(--vl-space-6);
+  }
+}
+
+/* Global focus-visible-ring for all interactive elements */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--vl-accent);
+  outline-offset: 2px;
+  border-radius: var(--vl-radius-sm);
+}
+
+/* ============================================================
+   Dashboard Enhanced Chart Classes
+   ============================================================ */
+
+/* Chart card container with glass-panel hover */
+.chart-card {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border);
+  border-radius: 12px;
+  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+}
+.chart-card:hover {
+  transform: scale(1.01);
+  box-shadow: var(--vl-shadow-glow);
+  border-color: var(--vl-border-accent);
+}
+
+/* Chart card header with controls */
+.chart-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 8px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.chart-card-header h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vl-text-white);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.chart-card-header .chart-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Chart type toggle button group */
+.chart-type-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  background: var(--vl-bg-inner);
+  border-radius: 8px;
+  border: 1px solid var(--vl-border-subtle);
+}
+.chart-type-toggle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--vl-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+}
+.chart-type-toggle button:hover {
+  color: var(--vl-text-white);
+  background: var(--vl-bg-card-hover);
+}
+.chart-type-toggle-active {
+  background: var(--vl-accent) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Chart download button */
+.chart-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--vl-border-subtle);
+  background: transparent;
+  color: var(--vl-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+}
+.chart-download-btn:hover {
+  color: var(--vl-accent);
+  border-color: var(--vl-border-accent);
+  background: var(--vl-bg-inner);
+}
+
+/* Chart footer stats row */
+.chart-footer-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 14px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.chart-footer-stats .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--vl-text-muted);
+}
+.chart-footer-stats .stat-item strong {
+  color: var(--vl-text-white);
+  font-weight: 600;
+}
+
+/* Mini sparkline container */
+.chart-mini-sparkline {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.chart-mini-sparkline:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--vl-shadow-glow);
+  border-color: var(--vl-border-accent);
+}
+
+/* Treemap cell with hover effect */
+.chart-treemap-cell {
+  transition: opacity 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
+}
+.chart-treemap-cell:hover {
+  opacity: 0.9;
+  filter: brightness(1.15);
+}
+
+/* Rich glass-panel tooltip for charts */
+.chart-tooltip-rich {
+  background: rgba(30, 41, 59, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--vl-border-subtle);
+  border-radius: 10px;
+  padding: 10px 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  color: var(--vl-text-white);
+  font-size: 12px;
+  pointer-events: none;
+  animation: chart-tooltip-fade 0.2s ease forwards;
+  max-width: 240px;
+  z-index: 50;
+}
+.chart-tooltip-rich .tooltip-title {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: var(--vl-text-white);
+}
+.chart-tooltip-rich .tooltip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0;
+}
+.chart-tooltip-rich .tooltip-label {
+  color: var(--vl-text-muted);
+  font-size: 11px;
+}
+.chart-tooltip-rich .tooltip-value {
+  font-weight: 600;
+  font-size: 12px;
+}
+.chart-tooltip-rich .tooltip-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--vl-border);
+  margin-top: 4px;
+  overflow: hidden;
+}
+.chart-tooltip-rich .tooltip-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Time range filter button group */
+.chart-time-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  background: var(--vl-bg-inner);
+  border-radius: 8px;
+  border: 1px solid var(--vl-border-subtle);
+}
+.chart-time-filter button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  height: 26px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--vl-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.chart-time-filter button:hover {
+  color: var(--vl-text-white);
+  background: var(--vl-bg-card-hover);
+}
+.chart-time-filter-active {
+  background: #10b981 !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Chart type switch animation */
+@keyframes chart-type-switch {
+  0% { opacity: 0.5; transform: scale(0.98); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Chart tooltip fade animation */
+@keyframes chart-tooltip-fade {
+  from { opacity: 0; transform: translateY(4px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Treemap cell enter animation */
+@keyframes chart-treemap-cell-enter {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================================
+   Pipeline Analytics Dashboard — CSS Classes & Animations
+   ============================================================ */
+
+/* Analytics panel container */
+.pipeline-analytics-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Semi-circle health gauge container */
+.health-gauge {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Animated gauge fill */
+.health-gauge-fill {
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Thin health bar for table rows */
+.health-mini-bar {
+  position: relative;
+  overflow: hidden;
+  border-radius: 9999px;
+}
+.health-mini-bar-fill {
+  transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Sortable stage performance table */
+.stage-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.stage-table-header {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+.stage-table-header:hover {
+  color: var(--vl-accent, #10b981);
+}
+
+/* Table row with hover effect */
+.stage-row {
+  transition: background-color 0.15s ease;
+}
+.stage-row:hover {
+  background-color: rgba(16, 185, 129, 0.04);
+}
+
+/* Horizontal timeline container */
+.pipeline-timeline {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Stage block on timeline */
+.timeline-stage-block {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.timeline-stage-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Diamond milestone marker */
+.timeline-milestone {
+  transition: transform 0.2s ease;
+}
+.timeline-milestone:hover {
+  transform: scale(1.15);
+}
+
+/* SVG flow diagram container */
+.pipeline-flow-diagram {
+  position: relative;
+  overflow: auto;
+}
+
+/* Rounded rectangle node */
+.flow-node {
+  transition: transform 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
+}
+.flow-node:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Curved arrow edge with animation */
+.flow-edge {
+  transition: stroke-opacity 0.2s ease;
+}
+
+/* Red alert banner */
+.bottleneck-alert {
+  position: relative;
+  overflow: hidden;
+  animation: bottleneck-pulse 2s ease-in-out infinite;
+}
+
+/* Circular SVG progress ring */
+.progress-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animated ring fill */
+.progress-ring-fill {
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: center;
+  transform: rotate(-90deg);
+}
+
+/* Pipeline stat card variant */
+.stat-card-pipeline {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card-pipeline:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ——— Keyframe Animations ——— */
+
+@keyframes health-gauge-fill {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: var(--gauge-target-offset, 0); }
+}
+
+@keyframes flow-edge-dash {
+  from { stroke-dashoffset: 20; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes timeline-block-enter {
+  from { opacity: 0; transform: scaleX(0); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+
+@keyframes progress-ring-fill {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: var(--ring-target-offset, 0); }
+}
+
+@keyframes bottleneck-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+/* prefers-reduced-motion for analytics */
+@media (prefers-reduced-motion: reduce) {
+  .health-gauge-fill { transition: none; }
+  .health-mini-bar-fill { transition: none; }
+  .timeline-stage-block:hover { transform: none; }
+  .timeline-milestone:hover { transform: none; }
+  .flow-node:hover { transform: none; }
+  .progress-ring-fill { transition: none; }
+  .stat-card-pipeline:hover { transform: none; }
+  .bottleneck-alert { animation: none; }
+}
+
+/* ============================================================
+   Mobile Swipe Gesture & Tab Transition Styles
+   ============================================================ */
+
+/* Swipe container — allows vertical scroll, captures horizontal swipes */
+.swipe-container {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.swipe-container.swipe-active {
+  transition: none;
+}
+
+/* Swipe indicator — subtle feedback bar at bottom during swipe */
+.swipe-indicator {
+  position: fixed;
+  bottom: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--vl-accent, #10b981);
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.swipe-indicator-active {
+  opacity: 1;
+}
+
+/* Tab slide transition — swipe left (forward) */
+.tab-slide-left {
+  animation: tabSlideLeft 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Tab slide transition — swipe right (backward) */
+.tab-slide-right {
+  animation: tabSlideRight 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes tabSlideLeft {
+  0% {
+    opacity: 0.6;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes tabSlideRight {
+  0% {
+    opacity: 0.6;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mobile card stack — stacked card layout for dashboard */
+.mobile-card-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .mobile-card-stack > * {
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Mobile fullscreen modal — full-height modal for mobile */
+@media (max-width: 768px) {
+  .mobile-fullscreen-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    background: var(--vl-bg, #0f172a);
+    padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    animation: mobileModalSlideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+}
+
+@keyframes mobileModalSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Swipe edge bounce */
+@keyframes swipeEdgeBounceLeft {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(-12px); }
+  60% { transform: translateX(4px); }
+}
+
+@keyframes swipeEdgeBounceRight {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(12px); }
+  60% { transform: translateX(-4px); }
+}
+
+/* Tab indicator slide on mobile bottom nav */
+@keyframes tabIndicatorSlide {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Swipe hint pulse */
+@keyframes swipeHintPulse {
+  0%, 100% { opacity: 0.3; transform: translateX(0); }
+  50% { opacity: 0.8; transform: translateX(8px); }
+}
+
+/* Swipe hint arrow animation */
+.swipe-hint-arrow {
+  animation: swipeHintPulse 2s ease-in-out infinite;
+}
+
+/* Mobile gesture overlay fade */
+@keyframes gestureOverlayFade {
+  from { opacity: 0.8; }
+  to { opacity: 0; }
+}
+
+/* Tab transition for mobile content swap */
+@keyframes tabContentSwap {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Swipe momentum decay */
+.swipe-momentum {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Mobile touch feedback press */
+@keyframes touchPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+.touch-press:active {
+  animation: touchPress 0.15s ease;
+}
+
+/* ============================================================
+// Timeline Container & Components
+// ============================================================ */
+.timeline-container {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.timeline-node {
+  position: absolute;
+  left: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  animation: timelineNodeEnter 0.4s ease-out both;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 0.5625rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  animation: timelineLineDraw 0.6s ease-out both;
+}
+
+.timeline-card {
+  animation: timelineCardSlide 0.4s ease-out both;
+  transition: all 0.2s ease;
+}
+
+.timeline-card:hover {
+  transform: translateY(-1px);
+}
+
+/* Timeline filter chips */
+.timeline-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--vl-border);
+  background: var(--vl-bg-inner);
+  color: var(--vl-text-muted);
+  user-select: none;
+}
+
+.timeline-filter-chip:hover {
+  background: var(--vl-bg-card-hover);
+}
+
+.timeline-filter-chip.active {
+  background: var(--vl-accent, #10b981);
+  color: white;
+  border-color: var(--vl-accent, #10b981);
+}
+
+/* ============================================================
+// Ticker / Marquee
+// ============================================================ */
+.ticker-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.ticker-track {
+  display: flex;
+  animation: tickerScroll 30s linear infinite;
+  width: max-content;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 0.75rem;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: var(--vl-text-muted);
+  flex-shrink: 0;
+}
+
+.ticker-item .ticker-separator {
+  color: var(--vl-accent, #10b981);
+  margin-left: 0.75rem;
+  opacity: 0.5;
+}
+
+/* ============================================================
+   Visual Effects Pack: Advanced Animations & Micro-Interactions
+   ============================================================ */
+
+/* Parallax hero container */
+.parallax-hero-container {
+  position: relative;
+  overflow: hidden;
+}
+.parallax-layer-bg,
+.parallax-layer-mid,
+.parallax-layer-fg {
+  will-change: transform;
+  contain: layout style paint;
+}
+.parallax-particle {
+  transition: opacity 0.3s ease;
+}
+
+/* 3D card perspective wrapper */
+.three-d-card {
+  transform-style: preserve-3d;
+}
+.three-d-card-light {
+  transition: opacity 0.3s ease;
+}
+.three-d-card-border-shine {
+  transition: opacity 0.4s ease;
+}
+
+/* Magnetic button v2 transition */
+.magnetic-button-v2 {
+  will-change: transform;
+  cursor: pointer;
+}
+
+/* Ripple container and wave */
+.ripple-container {
+  position: relative;
+  overflow: hidden;
+}
+.ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Morphing icon */
+.morphing-icon {
+  transition: color 0.2s ease;
+}
+
+/* Count up number */
+.count-up-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Typewriter text */
+.typewriter-text {
+  display: inline;
+}
+.typewriter-cursor-v2 {
+  color: var(--vl-accent, #10b981);
+  font-weight: 300;
+}
+
+/* Shimmer button v2 */
+.shimmer-button-v2 {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-sweep {
+  will-change: transform;
+}
+
+/* Enhanced scroll progress fill */
+.enhanced-scroll-progress-fill {
+  transition: width 0.1s linear;
+}
+
+/* Scroll section dots */
+.scroll-section-dot {
+  cursor: pointer;
+}
+.scroll-section-tooltip {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.scroll-reading-time {
+  font-variant-numeric: tabular-nums;
+}

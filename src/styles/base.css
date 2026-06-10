@@ -1,0 +1,26 @@
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+/* ===== 5. Selection Styling ===== */
+::selection {
+  background: rgba(16, 185, 129, 0.3);
+  color: inherit;
+}
+::-moz-selection {
+  background: rgba(16, 185, 129, 0.3);
+  color: inherit;
+}
+
+/* ===== 6. Placeholder Styling ===== */
+::placeholder {
+  color: var(--vl-text-muted);
+  opacity: 0.7;
+}
+input::placeholder, textarea::placeholder {
+  transition: opacity 0.2s;
+}
+input:focus::placeholder, textarea:focus::placeholder {
+  opacity: 0.4;
+}
+}

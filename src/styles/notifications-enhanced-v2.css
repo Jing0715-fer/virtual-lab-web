@@ -1,0 +1,418 @@
+/* ═══════════════════════════════════════════════════════════════
+   Notifications Enhanced V2 — .ne2-* prefixed classes
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Notification Card ────────────────────────────────────────── */
+.ne2-card {
+  background: var(--vl-bg-card);
+  border: 1px solid var(--vl-border);
+  border-radius: var(--vl-radius-lg);
+  padding: 14px 18px;
+  transition: all var(--vl-transition-base);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.ne2-card:hover {
+  background: var(--vl-bg-card-hover);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+.ne2-card--unread {
+  border-left: 3px solid var(--vl-accent);
+}
+.ne2-card--unread:hover {
+  border-left-color: #059669;
+}
+.ne2-card--expanded {
+  border-color: var(--vl-border-accent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* ── Unread Dot ───────────────────────────────────────────────── */
+.ne2-unread-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  flex-shrink: 0;
+  position: relative;
+}
+.ne2-unread-dot::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  animation: ne2-dot-pulse 2s ease-in-out infinite;
+}
+
+/* ── Pulsing Badge (unread count) ────────────────────────────── */
+.ne2-badge-pulse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: var(--vl-radius-full);
+  background: #10b981;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0 6px;
+  position: relative;
+}
+.ne2-badge-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--vl-radius-full);
+  background: rgba(16, 185, 129, 0.3);
+  animation: ne2-badge-ring 1.5s ease-out infinite;
+}
+
+/* ── Type-Specific Avatar Wraps ──────────────────────────────── */
+.ne2-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--vl-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ne2-avatar--meeting { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+.ne2-avatar--agent { background: rgba(6, 182, 212, 0.12); color: #06b6d4; }
+.ne2-avatar--research { background: rgba(139, 92, 246, 0.12); color: #8b5cf6; }
+.ne2-avatar--system { background: rgba(107, 114, 128, 0.12); color: #6b7280; }
+.ne2-avatar--mention { background: rgba(245, 158, 11, 0.12); color: #f59e0b; }
+.ne2-avatar--alert { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
+
+/* ── Type Color Accents ──────────────────────────────────────── */
+.ne2-accent--meeting { color: #10b981; }
+.ne2-accent--agent { color: #06b6d4; }
+.ne2-accent--research { color: #8b5cf6; }
+.ne2-accent--system { color: #6b7280; }
+.ne2-accent--mention { color: #f59e0b; }
+.ne2-accent--alert { color: #ef4444; }
+
+/* ── Notification Body ───────────────────────────────────────── */
+.ne2-body {
+  flex: 1;
+  min-width: 0;
+}
+.ne2-title {
+  font-size: var(--vl-text-sm);
+  font-weight: 600;
+  color: var(--vl-text-heading);
+  margin: 0 0 3px;
+  line-height: 1.4;
+}
+.ne2-desc {
+  font-size: var(--vl-text-xs);
+  color: var(--vl-text-muted);
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.ne2-desc--expanded {
+  -webkit-line-clamp: unset;
+  display: block;
+}
+.ne2-timestamp {
+  font-size: 11px;
+  color: var(--vl-text-muted);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Action Buttons ───────────────────────────────────────────── */
+.ne2-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.ne2-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--vl-radius-md);
+  border: 1px solid var(--vl-border);
+  background: var(--vl-bg-card);
+  color: var(--vl-text-secondary);
+  font-size: var(--vl-text-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--vl-transition-fast);
+  white-space: nowrap;
+}
+.ne2-action-btn:hover {
+  border-color: var(--vl-accent);
+  color: var(--vl-accent);
+  background: var(--vl-accent-bg);
+}
+.ne2-action-btn--dismiss {
+  color: #ef4444;
+  border-color: transparent;
+  background: rgba(239, 68, 68, 0.06);
+}
+.ne2-action-btn--dismiss:hover {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+/* ── Filter Tabs ───────────────────────────────────────────────── */
+.ne2-filter-tab {
+  padding: 6px 16px;
+  border-radius: var(--vl-radius-full);
+  border: 1px solid var(--vl-border);
+  background: var(--vl-bg-card);
+  color: var(--vl-text-secondary);
+  font-size: var(--vl-text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--vl-transition-fast);
+  white-space: nowrap;
+}
+.ne2-filter-tab:hover {
+  border-color: var(--vl-accent);
+  color: var(--vl-accent);
+}
+.ne2-filter-tab--active {
+  background: var(--vl-accent);
+  color: #fff;
+  border-color: var(--vl-accent);
+}
+.ne2-filter-tab--active:hover {
+  background: #059669;
+  color: #fff;
+}
+
+/* ── Group Header ────────────────────────────────────────────── */
+.ne2-group-header {
+  font-size: var(--vl-text-xs);
+  font-weight: 600;
+  color: var(--vl-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 16px 0 8px;
+  border-bottom: 1px solid var(--vl-border-subtle, rgba(229, 231, 235, 0.4));
+  margin-bottom: 10px;
+}
+
+/* ── Preferences Panel ───────────────────────────────────────── */
+.ne2-prefs-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 360px;
+  max-width: 90vw;
+  height: 100vh;
+  background: var(--vl-bg-card);
+  border-left: 1px solid var(--vl-border);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  overflow-y: auto;
+  z-index: 100;
+  transform: translateX(100%);
+  transition: transform var(--vl-transition-slow);
+}
+.ne2-prefs-panel--open {
+  transform: translateX(0);
+}
+.ne2-prefs-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--vl-border);
+}
+.ne2-prefs-panel__title {
+  font-size: var(--vl-text-lg);
+  font-weight: 600;
+  color: var(--vl-text-heading);
+  margin: 0;
+}
+.ne2-prefs-section {
+  margin-bottom: 24px;
+}
+.ne2-prefs-section__title {
+  font-size: var(--vl-text-sm);
+  font-weight: 600;
+  color: var(--vl-text-heading);
+  margin: 0 0 14px;
+}
+.ne2-prefs-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--vl-border-subtle, rgba(229, 231, 235, 0.4));
+}
+.ne2-prefs-item__label {
+  font-size: var(--vl-text-sm);
+  color: var(--vl-text-secondary);
+}
+.ne2-prefs-toggle {
+  width: 42px;
+  height: 24px;
+  border-radius: var(--vl-radius-full);
+  background: var(--vl-border);
+  cursor: pointer;
+  position: relative;
+  transition: background var(--vl-transition-fast);
+  border: none;
+  flex-shrink: 0;
+}
+.ne2-prefs-toggle--on {
+  background: var(--vl-accent);
+}
+.ne2-prefs-toggle__knob {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: transform var(--vl-transition-fast);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+.ne2-prefs-toggle--on .ne2-prefs-toggle__knob {
+  transform: translateX(18px);
+}
+
+/* ── Stats Summary Badges ────────────────────────────────────── */
+.ne2-stats-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ne2-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--vl-radius-full);
+  font-size: var(--vl-text-xs);
+  font-weight: 500;
+}
+.ne2-stat-badge--unread { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+.ne2-stat-badge--mentions { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.ne2-stat-badge--alerts { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+/* ── Empty State ──────────────────────────────────────────────── */
+.ne2-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  text-align: center;
+}
+.ne2-empty-state__icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--vl-accent-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vl-accent);
+  margin-bottom: 20px;
+  animation: ne2-check-bounce 0.6s ease;
+}
+.ne2-empty-state__title {
+  font-size: var(--vl-text-xl);
+  font-weight: 600;
+  color: var(--vl-text-heading);
+  margin: 0 0 8px;
+}
+.ne2-empty-state__desc {
+  font-size: var(--vl-text-sm);
+  color: var(--vl-text-muted);
+  margin: 0;
+  max-width: 300px;
+}
+
+/* ── Overlay ───────────────────────────────────────────────────── */
+.ne2-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--vl-transition-slow);
+}
+.ne2-overlay--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Animations ──────────────────────────────────────────────── */
+@keyframes ne2-dot-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+}
+@keyframes ne2-badge-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+@keyframes ne2-check-bounce {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+@keyframes ne2-slide-in {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes ne2-dismiss {
+  0% { opacity: 1; transform: translateX(0); max-height: 200px; margin-bottom: 10px; }
+  60% { opacity: 0; transform: translateX(60px); }
+  100% { opacity: 0; transform: translateX(60px); max-height: 0; margin-bottom: 0; padding: 0; border-width: 0; overflow: hidden; }
+}
+.ne2-animate-slide-in {
+  animation: ne2-slide-in 0.3s ease forwards;
+}
+.ne2-animate-dismiss {
+  animation: ne2-dismiss 0.4s ease forwards;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ne2-card { padding: 12px 14px; }
+  .ne2-avatar { width: 32px; height: 32px; }
+  .ne2-prefs-panel { width: 100vw; max-width: 100vw; }
+  .ne2-stats-row { gap: 6px; }
+  .ne2-stat-badge { padding: 4px 10px; font-size: 11px; }
+  .ne2-filter-tab { padding: 5px 12px; font-size: var(--vl-text-xs); }
+  .ne2-actions { gap: 4px; }
+  .ne2-action-btn { padding: 3px 10px; }
+}
+
+/* ── Dark Mode Support ───────────────────────────────────────── */
+.dark .ne2-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+.dark .ne2-card--expanded {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+.dark .ne2-prefs-panel {
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.3);
+}
+.dark .ne2-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+.dark .ne2-empty-state__icon {
+  box-shadow: 0 0 32px rgba(16, 185, 129, 0.15);
+}

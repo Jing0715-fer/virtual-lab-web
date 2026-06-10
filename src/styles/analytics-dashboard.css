@@ -1,0 +1,488 @@
+/* ============================================================
+   Analytics Dashboard — Advanced Meeting Analytics Styles
+   ============================================================ */
+
+/* ── Stat Card Styles ── */
+.analytics-stat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all var(--vl-transition-slow);
+}
+
+.analytics-stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(6, 182, 212, 0.1), transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.analytics-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--vl-shadow-glow), 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-stat-card .stat-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* ── Heatmap Grid ── */
+.heatmap-container {
+  display: grid;
+  grid-template-columns: 48px repeat(7, 1fr);
+  grid-template-rows: 24px repeat(5, 1fr);
+  gap: 3px;
+  padding: 8px 0;
+}
+
+.heatmap-cell {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  transition: all var(--vl-transition-fast);
+  cursor: pointer;
+  min-height: 20px;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.15);
+  z-index: 2;
+}
+
+.heatmap-cell.heat-0 {
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+}
+
+.heatmap-cell.heat-1 {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.heatmap-cell.heat-2 {
+  background: rgba(16, 185, 129, 0.35);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+}
+
+.heatmap-cell.heat-3 {
+  background: rgba(16, 185, 129, 0.55);
+  border: 1px solid rgba(16, 185, 129, 0.65);
+}
+
+.heatmap-cell.heat-4 {
+  background: rgba(16, 185, 129, 0.8);
+  border: 1px solid rgba(16, 185, 129, 0.9);
+}
+
+.heatmap-label {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  color: var(--vl-text-muted);
+}
+
+.heatmap-day-label {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vl-text-muted);
+}
+
+/* ── Circular Gauge Animation ── */
+@keyframes gauge-fill {
+  from {
+    stroke-dashoffset: 314;
+  }
+}
+
+.gauge-circle {
+  animation: gauge-fill 1.5s ease-out forwards;
+  transition: stroke-dashoffset 0.6s ease-out;
+}
+
+.gauge-bg {
+  stroke: var(--vl-bg-inner);
+}
+
+.gauge-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-label {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Comparison Layout ── */
+.comparison-panel {
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all var(--vl-transition-base);
+}
+
+.comparison-panel:hover {
+  box-shadow: var(--vl-shadow-glow);
+}
+
+.comparison-divider {
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--vl-accent), transparent);
+  min-height: 100%;
+}
+
+/* ── Sentiment Meter ── */
+.sentiment-meter {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--vl-bg-inner);
+}
+
+.sentiment-meter-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease-out;
+}
+
+.sentiment-meter-fill.positive {
+  background: linear-gradient(90deg, #10b981, #34d399);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+.sentiment-meter-fill.neutral {
+  background: linear-gradient(90deg, #64748b, #94a3b8);
+  box-shadow: 0 0 12px rgba(100, 116, 139, 0.3);
+}
+
+.sentiment-meter-fill.negative {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+}
+
+.sentiment-gauge-arc {
+  transition: stroke-dasharray 1s ease-out;
+}
+
+/* ── Word Cloud ── */
+.word-cloud-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 10px;
+  padding: 16px;
+  min-height: 120px;
+}
+
+.word-cloud-item {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: default;
+  transition: all var(--vl-transition-fast);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.word-cloud-item:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+.word-cloud-item.sentiment-positive {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.word-cloud-item.sentiment-neutral {
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.word-cloud-item.sentiment-negative {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.word-cloud-item.size-xl {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.word-cloud-item.size-lg {
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.word-cloud-item.size-md {
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.word-cloud-item.size-sm {
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.word-cloud-item.size-xs {
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+/* ── Chart Container ── */
+.analytics-chart-container {
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all var(--vl-transition-base);
+}
+
+.analytics-chart-container:hover {
+  box-shadow: var(--vl-shadow-glow);
+}
+
+/* ── Animated Counter ── */
+@keyframes counter-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.counter-loading {
+  animation: counter-pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Difference Highlight Card ── */
+.diff-highlight-card {
+  position: relative;
+  border-left: 3px solid var(--vl-accent);
+  padding-left: 12px;
+  transition: all var(--vl-transition-fast);
+}
+
+.diff-highlight-card:hover {
+  background: var(--vl-accent-bg);
+}
+
+.diff-highlight-card.diff-positive {
+  border-left-color: #10b981;
+}
+
+.diff-highlight-card.diff-negative {
+  border-left-color: #ef4444;
+}
+
+.diff-highlight-card.diff-neutral {
+  border-left-color: #64748b;
+}
+
+/* ── Topic Cluster ── */
+.topic-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.topic-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--vl-border-subtle);
+  background: var(--vl-bg-inner);
+  color: var(--vl-text-body);
+  transition: all var(--vl-transition-fast);
+}
+
+.topic-tag:hover {
+  border-color: var(--vl-accent);
+  background: var(--vl-accent-bg);
+  color: var(--vl-accent);
+}
+
+/* ── Vocabulary Diversity Bar ── */
+.vocabulary-bar {
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--vl-bg-inner);
+}
+
+.vocabulary-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+  transition: width 1s ease-out;
+}
+
+/* ── Responsive Dashboard Grid ── */
+@media (max-width: 640px) {
+  .analytics-grid-6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .heatmap-container {
+    gap: 2px;
+  }
+
+  .heatmap-cell {
+    min-height: 16px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .analytics-grid-6 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1025px) {
+  .analytics-grid-6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .comparison-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .comparison-divider {
+    width: 100%;
+    height: 2px;
+    min-height: auto;
+  }
+
+  .analytics-charts-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Scrollbar for Long Lists ── */
+.analytics-scrollable {
+  max-height: 384px;
+  overflow-y: auto;
+}
+
+.analytics-scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.analytics-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.analytics-scrollable::-webkit-scrollbar-thumb {
+  background: var(--vl-border-subtle);
+  border-radius: 3px;
+}
+
+.analytics-scrollable::-webkit-scrollbar-thumb:hover {
+  background: var(--vl-text-muted);
+}
+
+/* ── Tooltip enhancements ── */
+.analytics-tooltip {
+  background: var(--vl-bg-card) !important;
+  border: 1px solid var(--vl-border) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+/* ── Meeting selector chip ── */
+.meeting-select-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--vl-transition-fast);
+  border: 1px solid var(--vl-border-subtle);
+  background: var(--vl-bg-inner);
+  color: var(--vl-text-muted);
+}
+
+.meeting-select-chip.selected {
+  border-color: var(--vl-accent);
+  background: var(--vl-accent-bg);
+  color: var(--vl-accent);
+}
+
+.meeting-select-chip:hover {
+  border-color: var(--vl-accent);
+}
+
+/* ── Topic Bar (Venn concept) ── */
+.topic-bar {
+  height: 24px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  transition: all var(--vl-transition-base);
+}
+
+.topic-bar-segment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: white;
+  transition: width 0.5s ease-out;
+}
+
+/* ── Summary comparison panel ── */
+.summary-panel {
+  position: relative;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--vl-bg-inner);
+  border: 1px solid var(--vl-border-subtle);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--vl-text-body);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.summary-panel::before {
+  content: attr(data-meeting-name);
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--vl-text-muted);
+  background: var(--vl-bg-card);
+  border-radius: 4px;
+}

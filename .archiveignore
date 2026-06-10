@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.git/
+skills/
+.zscripts/
+download/
+*.log
+dev.log

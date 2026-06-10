@@ -1,0 +1,523 @@
+/* ============================================================
+   Research Portfolio Dashboard Styles
+   Prefix: .rp-*
+   ============================================================ */
+
+/* ─── Card Styles ─────────────────────────────────────────── */
+
+.rp-metric-card,
+.rp-project-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.rp-metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(16, 185, 129, 0.3),
+    rgba(6, 182, 212, 0.3),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.rp-metric-card:hover::before,
+.rp-project-card:hover::before {
+  opacity: 1;
+}
+
+/* Glassmorphism card variant */
+.rp-glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+}
+
+.dark .rp-glass-card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(51, 65, 85, 0.4);
+}
+
+/* ─── Progress Bars ───────────────────────────────────────── */
+
+.rp-progress-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.rp-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: rp-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes rp-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* ─── Animated Counter ────────────────────────────────────── */
+
+.rp-counter {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* ─── Timeline Styles ────────────────────────────────────── */
+
+.rp-timeline-container {
+  position: relative;
+  padding: 20px 0;
+}
+
+.rp-timeline-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.2),
+    var(--vl-border, #e5e7eb),
+    rgba(6, 182, 212, 0.2)
+  );
+  transform: translateY(-50%);
+}
+
+.rp-timeline-dot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 2;
+}
+
+.rp-timeline-dot:hover {
+  transform: translateY(-50%) scale(1.2);
+  z-index: 10;
+}
+
+.rp-timeline-dot-inner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--vl-bg-card, #fff);
+  transition: all 0.2s ease;
+}
+
+.rp-timeline-dot:hover .rp-timeline-dot-inner {
+  box-shadow: 0 0 16px currentColor;
+}
+
+.rp-timeline-tooltip {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--vl-bg-card, #fff);
+  border: 1px solid var(--vl-border, #e5e7eb);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  white-space: nowrap;
+  z-index: 20;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.rp-timeline-dot:hover .rp-timeline-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ─── Chart Container ─────────────────────────────────────── */
+
+.rp-chart-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.rp-chart-container svg {
+  display: block;
+}
+
+.rp-chart-container text {
+  font-family: var(--font-geist-sans, system-ui, -apple-system, sans-serif);
+}
+
+/* ─── Network Graph ───────────────────────────────────────── */
+
+.rp-network-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.rp-network-container svg circle {
+  transition: r 0.2s ease, opacity 0.2s ease;
+}
+
+.rp-network-container svg circle:hover {
+  filter: brightness(1.1);
+}
+
+.rp-network-container svg line {
+  transition: stroke 0.2s ease, opacity 0.2s ease;
+}
+
+/* ─── Donut Chart ─────────────────────────────────────────── */
+
+.rp-donut-segment {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform-origin: center;
+}
+
+.rp-donut-segment:hover {
+  opacity: 1 !important;
+  transform: scale(1.03);
+}
+
+/* ─── Sparkline Styles ────────────────────────────────────── */
+
+.rp-sparkline-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+}
+
+.rp-sparkline-bar {
+  border-radius: 1px 1px 0 0;
+  transition: height 0.3s ease;
+  min-width: 3px;
+}
+
+/* ─── Filter Bar ──────────────────────────────────────────── */
+
+.rp-filter-button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--vl-border, #e5e7eb);
+  background: var(--vl-bg-card, #fff);
+  color: var(--vl-text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.rp-filter-button:hover {
+  background: var(--vl-bg-secondary, #f1f3f5);
+}
+
+.rp-filter-button-active {
+  background: var(--vl-accent, #10b981);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* ─── Search Input ────────────────────────────────────────── */
+
+.rp-search-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--vl-bg-card, #fff);
+  border: 1px solid var(--vl-border, #e5e7eb);
+  transition: all 0.15s ease;
+}
+
+.rp-search-input:focus-within {
+  border-color: var(--vl-accent, #10b981);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.rp-search-input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--vl-text-primary);
+}
+
+.rp-search-input input::placeholder {
+  color: var(--vl-text-muted);
+}
+
+/* ─── Badge Styles ────────────────────────────────────────── */
+
+.rp-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.rp-status-active {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+
+.rp-status-paused {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+}
+
+.rp-status-completed {
+  background: rgba(6, 182, 212, 0.12);
+  color: #06b6d4;
+}
+
+.rp-status-archived {
+  background: rgba(107, 114, 128, 0.12);
+  color: #6b7280;
+}
+
+/* ─── Quick Stat Pills ────────────────────────────────────── */
+
+.rp-quick-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.rp-quick-stat:hover {
+  transform: translateY(-1px);
+}
+
+/* ─── Section Headers ─────────────────────────────────────── */
+
+.rp-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.rp-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--vl-text-primary);
+}
+
+.rp-section-subtitle {
+  font-size: 12px;
+  color: var(--vl-text-muted);
+  margin: 4px 0 0;
+}
+
+/* ─── Avatar Stack ────────────────────────────────────────── */
+
+.rp-avatar-stack {
+  display: flex;
+  align-items: center;
+}
+
+.rp-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  border: 2px solid var(--vl-bg-card, #fff);
+  margin-left: -8px;
+  transition: transform 0.2s ease;
+}
+
+.rp-avatar:first-child {
+  margin-left: 0;
+}
+
+.rp-avatar:hover {
+  transform: translateY(-2px);
+  z-index: 10;
+}
+
+.rp-avatar-overflow {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--vl-bg-secondary, #f1f3f5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--vl-text-muted);
+  margin-left: -8px;
+  border: 2px solid var(--vl-bg-card, #fff);
+}
+
+/* ─── Funding Legend ──────────────────────────────────────── */
+
+.rp-funding-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--vl-border-subtle, rgba(229, 231, 235, 0.5));
+  transition: background 0.15s ease;
+}
+
+.rp-funding-row:last-child {
+  border-bottom: none;
+}
+
+.rp-funding-row:hover {
+  background: var(--vl-bg-secondary, #f1f3f5);
+  border-radius: 4px;
+}
+
+/* ─── Pulse Animation ─────────────────────────────────────── */
+
+@keyframes rp-pulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes rp-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rp-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes rp-count-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Responsive Breakpoints ─────────────────────────────── */
+
+@media (max-width: 768px) {
+  .rp-metric-card {
+    padding: 14px 16px !important;
+  }
+
+  .rp-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .rp-timeline-tooltip {
+    white-space: normal;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 640px) {
+  .rp-project-card {
+    padding: 0 !important;
+  }
+
+  .rp-project-card > div {
+    padding: 14px 16px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rp-metric-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+}
+
+/* ─── Dark Mode ───────────────────────────────────────────── */
+
+.dark .rp-metric-card::before,
+.dark .rp-project-card::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(16, 185, 129, 0.15),
+    rgba(6, 182, 212, 0.15),
+    transparent
+  );
+}
+
+.dark .rp-metric-card:hover,
+.dark .rp-project-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.dark .rp-timeline-tooltip {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(51, 65, 85, 0.5);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.dark .rp-funding-row:hover {
+  background: rgba(30, 41, 59, 0.5);
+}
